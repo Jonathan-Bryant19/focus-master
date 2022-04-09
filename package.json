@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@react-navigation/native": "^6.0.10",
+    "react-navigation": "^4.4.4"
+  }
+}
