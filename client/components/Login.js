@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, StatusBar } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -16,7 +16,6 @@ export default function Login() {
 //       .then((data) => setCount(data.count))
 //   }, [])
 
-  const Stack = createStackNavigator();
   const navigation = useNavigation();
 
   return (
@@ -39,7 +38,7 @@ export default function Login() {
           secureTextEntry
         />
         <Button
-          onPress={() => {}}
+          onPress={() => navigation.navigate('MainNavigator')}
           title="Login"
           color="blue"
           accessibilityLabel="Login button"

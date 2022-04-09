@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
-export default function Signup({ setUser }) {
+export default function Signup({ setUser, mainNavigator }) {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
