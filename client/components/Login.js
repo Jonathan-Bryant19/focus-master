@@ -31,7 +31,7 @@ export default function Login() {
             // What I'm not getting is that user is "null" if you log it here:
             // r.json().then(user => setUser(user))
             clearText()
-            navigation.navigate('Home', {
+            navigation.navigate('MainNavigator', {
               username: username
             })
         } else {

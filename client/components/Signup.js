@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Signup() {
     const [username, setUsername] = useState('')
@@ -27,8 +27,8 @@ export default function Signup() {
         }).then(r => {
             if (r.ok) {
                 r.json().then(user => setUser(user))
-                navigation.navigate('Home', {
-                    username: username
+                navigation.navigate('MainNavigator', {
+                    username
                 })
             } else if (r.status === 422) {
                 r.json().then(json => setErrors(json.errors))

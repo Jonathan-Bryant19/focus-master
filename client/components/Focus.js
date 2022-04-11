@@ -1,14 +1,55 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Button, StatusBar } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-native'
+import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native'
 
 export default function Focus() {
+    const [duration, setDuration] = useState(5)
+    const [interval, setInterval] = useState(0.0833)
+    const navigation = useNavigation();
 
-    
+    const onStartFocusSession = () => {
+        console.log("Starting Focus Session...")
+        navigation.navigate("FocusSessionNavigator", {
+            screen: 'FocusSession',
+            params: {
+                duration,
+                interval
+            }
+        })
+    }
 
     return (
         <View style={styles.container}>
-        <Text style={styles.heading}>Focus</Text>
-        <Text style={styles.subheading}>This is the Focus screen</Text>
+            <ScrollView>
+                <Text style={styles.heading}>Focus</Text>
+                <Text style={styles.subheading}>Duration:</Text>
+                    <Picker
+                        style={styles.picker}
+                        selectedValue={duration}
+                        onValueChange={currentDuration => setDuration(currentDuration)}>
+                        <Picker.Item label='5 minutes' value={5} />
+                        <Picker.Item label='15 minutes' value={15} />
+                        <Picker.Item label='30 minutes' value={30} />
+                        <Picker.Item label='60 minutes' value={60} />
+                    </Picker>
+                <Text style={styles.subheading}>Interval:</Text>
+                    <Picker
+                        style={styles.picker}
+                        selectedValue={interval}
+                        onValueChange={currentInterval => setInterval(currentInterval)}>
+                        <Picker.Item label='5 seconds' value={0.0833} />
+                        <Picker.Item label='5 minutes' value={5} />
+                        <Picker.Item label='10 minutes' value={10} />
+                        <Picker.Item label='15 minutes' value={15} />
+                    </Picker>
+                <Button 
+                    onPress={onStartFocusSession}
+                    title="Focus!"
+                    color="blue"
+                    accessibilityLabel='Start Focus Session button'    
+                />
+            </ScrollView>
         </View>
     );
 }
@@ -26,9 +67,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     subheading: {
-        marginTop: 20,
+        marginTop: 10,
         marginBottom: 20,
         fontSize: 40,
         fontWeight: 'bold'
+    },
+    picker: {
+        marginTop: -80
     }
 });

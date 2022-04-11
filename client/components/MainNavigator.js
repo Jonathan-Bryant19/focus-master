@@ -4,7 +4,6 @@ import Home from './Home'
 import Focus from './Focus'
 import Profile from './Profile'
 
-
 export default function MainNavigator({route}) {
     const Tab = createBottomTabNavigator()
     // console.log(route.params.user)
