@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Button, StatusBar } from 'react-native'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Home from './Home'
-import MainNavigator from './MainNavigator'
 
-export default function Focus() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const Tab = createBottomTabNavigator()
-  const navigation = useNavigation();
+export default function Profile() {
 
   return (
       <View style={styles.container}>
-        <Text style={styles.heading}>Focus</Text>
-        <Text style={styles.subheading}>This is the Focus screen</Text>
+        <Text style={styles.heading}>Profile</Text>
+        <Text style={styles.subheading}>This is the Profile screen</Text>
       </View>
   );
 }

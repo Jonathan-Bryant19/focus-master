@@ -25,6 +25,7 @@ export default function Signup({ setUser, mainNavigator }) {
         }).then(r => {
             if (r.ok) {
                 r.json().then(console.log('made it!'))
+                navigation.navigate('Home')
             } else {
                 console.log(r.status)
             }

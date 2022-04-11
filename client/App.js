@@ -14,25 +14,25 @@ export default function App() {
 
   const Stack = createStackNavigator();
 
-  const MainNavigator = () => {
-    const Tab = createBottomTabNavigator()
+  // const MainNavigator = () => {
+  //   const Tab = createBottomTabNavigator()
 
-    return (
-        <Tab.Navigator initialRouteName='Home'>
-            <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="Focus" component={Focus} />
-            {/* <Tab.Screen name="Profile" component={Profile} /> */}
-            <Tab.Screen name="MainNavigator" component={MainNavigator} />
-        </Tab.Navigator>
-    )
-  }
+  //   return (
+  //       <Tab.Navigator initialRouteName='Home'>
+  //           <Tab.Screen name="Home" component={Home} />
+  //           <Tab.Screen name="Focus" component={Focus} />
+  //           {/* <Tab.Screen name="Profile" component={Profile} /> */}
+  //           <Tab.Screen name="MainNavigator" component={MainNavigator} />
+  //       </Tab.Navigator>
+  //   )
+  // }
 
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode="none">
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} setUser={setUser} />
-        <Stack.Screen name="Main" component={MainNavigator} />
+        <Stack.Screen name="Home" component={MainNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );

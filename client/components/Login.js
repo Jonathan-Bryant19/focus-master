@@ -38,7 +38,7 @@ export default function Login() {
           secureTextEntry
         />
         <Button
-          onPress={() => navigation.navigate('MainNavigator')}
+          onPress={() => navigation.navigate('Main')}
           title="Login"
           color="blue"
           accessibilityLabel="Login button"
