@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginBottom: 50,
         fontSize: 70,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     subheading: {
         marginTop: 10,
