@@ -1,35 +1,52 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, TextInput, Button, StatusBar } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function Profile() {
 
-  return (
-      <View style={styles.container}>
+    const navigation = useNavigation();
+
+    const onLogout = () => {
+        fetch('http://localhost:3000/logout', {
+            method: 'DELETE'
+        }).then(r => {
+            if (r.ok) {
+                // setUser(null)
+                navigation.navigate('Login')
+            }
+        })
+    }
+
+    return (
+        <View style={styles.container}>
         <Text style={styles.heading}>Profile</Text>
         <Text style={styles.subheading}>This is the Profile screen</Text>
-      </View>
-  );
+        <Button 
+            onPress={onLogout}
+            title="Logout"
+            color="red"
+            accessibilityLabel='Logout button'
+        />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-  },
-  heading: {
+    },
+    heading: {
     marginTop: 50,
     marginBottom: 50,
     fontSize: 70,
     fontWeight: 'bold'
-  },
-  subheading: {
+    },
+    subheading: {
     marginTop: 20,
     marginBottom: 20,
     fontSize: 40,
     fontWeight: 'bold'
-  }
+    }
 });

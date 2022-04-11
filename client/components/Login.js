@@ -1,22 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, StatusBar } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-//   useEffect(() => {
-//     fetch('http://localhost:3000/hello', {
-//       method: "GET",
-//       credentials: "include"
-//     })
-//       .then((r) => r.json())
-//       .then((data) => setCount(data.count))
-//   }, [])
-
   const navigation = useNavigation();
+  const [errors, setErrors] = useState(null)
+
+  const clearText = () => {
+    setUsername('')
+    setPassword('')
+    setErrors(null)
+  }
+
+  const onLogin = e => {
+    e.preventDefault()
+    fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username,
+            password
+        })
+    }).then(r => {
+        if (r.ok) {
+            // What I'm not getting is that user is "null" if you log it here:
+            // r.json().then(user => setUser(user))
+            clearText()
+            navigation.navigate('Home', {
+              username: username
+            })
+        } else {
+            if (r.status === 401) {
+                r.json().then(json => setErrors(json.error))
+            }
+        }
+    })
+}
 
   return (
       <View style={styles.container}>
@@ -26,8 +50,9 @@ export default function Login() {
           style={styles.input}
           label="Username"
           placeholder="Type your username here"
-          value={email}
-          onChangeText={setEmail}
+          value={username}
+          onChangeText={setUsername}
+          clearButtonMode="always"
         />
         <TextInput
           style={styles.input}
@@ -38,7 +63,7 @@ export default function Login() {
           secureTextEntry
         />
         <Button
-          onPress={() => navigation.navigate('Main')}
+          onPress={onLogin}
           title="Login"
           color="blue"
           accessibilityLabel="Login button"
@@ -50,6 +75,11 @@ export default function Login() {
           accessibilityLabel="Sign Up button"
         />
         <StatusBar style="auto" />
+        {errors ? 
+                <Text>{errors}</Text>
+            : 
+                <></>
+        }
       </View>
   );
 }

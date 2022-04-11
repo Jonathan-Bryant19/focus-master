@@ -5,12 +5,12 @@ import Focus from './Focus'
 import Profile from './Profile'
 
 
-export default function MainNavigator() {
+export default function MainNavigator({route}) {
     const Tab = createBottomTabNavigator()
-
+    // console.log(route.params.user)
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home" component={Home} />
+            <Tab.Screen name="Home" component={Home} initialParams={route.params}/>
             <Tab.Screen name="Focus" component={Focus} />
             <Tab.Screen name="Profile" component={Profile} />
         </Tab.Navigator>

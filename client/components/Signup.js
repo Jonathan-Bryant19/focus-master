@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Signup({ setUser, mainNavigator }) {
+export default function Signup() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const navigation = useNavigation();
+    const [errors, setErrors] = useState(null)
+    const [user, setUser] = useState(null)
 
     const onSignup = e => {
         e.preventDefault()
@@ -24,14 +26,15 @@ export default function Signup({ setUser, mainNavigator }) {
             })
         }).then(r => {
             if (r.ok) {
-                r.json().then(console.log('made it!'))
-                navigation.navigate('Home')
-            } else {
-                console.log(r.status)
+                r.json().then(user => setUser(user))
+                navigation.navigate('Home', {
+                    username: username
+                })
+            } else if (r.status === 422) {
+                r.json().then(json => setErrors(json.errors))
             }
         })
     }
-
 
     return (
         <View style={styles.container}>
@@ -84,7 +87,12 @@ export default function Signup({ setUser, mainNavigator }) {
                 color="red"
                 accessibilityLabel="Cancel signup"
             />
-        </View>
+            {errors ? 
+                <Text>{errors}</Text>
+            : 
+                <></>
+            }
+            </View>
     );
 }
 
@@ -96,27 +104,27 @@ function confirmPasswordsMatch(confirmationPassword, originalPassword) {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center'
     },
     heading: {
-      marginTop: 50,
-      marginBottom: 50,
-      fontSize: 70,
-      fontWeight: 'bold'
+        marginTop: 50,
+        marginBottom: 50,
+        fontSize: 70,
+        fontWeight: 'bold'
     },
     subheading: {
-      marginTop: 20,
-      marginBottom: 20,
-      fontSize: 40,
-      fontWeight: 'bold'
+        marginTop: 20,
+        marginBottom: 20,
+        fontSize: 40,
+        fontWeight: 'bold'
     },
     input: {
-      height: 40,
-      width: 300,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
+        height: 40,
+        width: 300,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10
     }
   });
