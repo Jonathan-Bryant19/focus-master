@@ -3,14 +3,12 @@ import { StyleSheet, Text, View, TextInput, Button, StatusBar, Image, ScrollView
 
 export default function FocusSession({ route }) {
     const { duration, interval } = route.params
-
+    
     const [onTask, setOnTask] = useState(0)
     const [total, setTotal] = useState(0)
-    const [rounds, setRounds] = useState(0)
-    const [title, setTitle] = useState('')
-    const [subtitle, setSubtitle] = useState('')
+    const [rounds, setRounds] = useState(3)
     const [isScreenBlank, setIsScreenBlank] = useState(true)
-    
+    const [endOfSession, setEndOfSession] = useState(false)
     const roundedRounds = (Math.round(duration/interval))
     const intervalMiliseconds = (Math.round(interval * 60) * 1000)
     
@@ -20,49 +18,57 @@ export default function FocusSession({ route }) {
         } else {
             setRounds(duration/interval)
         }
-        setTimeout(() => titleHelper(), intervalMiliseconds)
+        toggleScreen()
     }, [])
 
-    console.log("Rounded rounds: ", rounds)
-    console.log("Rounds: ", rounds)
-
-    function titleHelper() {
-        setTitle("Attention attack!")
-        setSubtitle("Are you focused on your current task?")
-        setIsScreenBlank(!isScreenBlank)
+    if (endOfSession) { 
+        handleEndOfSession()
     }
-  
+
+    function handleEndOfSession() {
+        console.log(`You were on task in ${onTask} of ${total} intervals. That's ${(onTask/total)*100}%!`)
+    }
+
+    function toggleScreen() {
+        console.log("toggleScreen just fired and rounds = ", rounds)
+        function handleTime() {
+            setIsScreenBlank(false)
+        }
+        if ((rounds - 1) > 0) {
+            setTimeout(handleTime, intervalMiliseconds)
+        } else if ((rounds - 1) === 0) {
+            setEndOfSession(true)
+        }
+    }
+    
     function logOnTask() {
         setOnTask(onTask + 1)
         setTotal(total + 1)
-        setRounds(rounds - 1) 
+        setRounds(rounds - 1)
+        setIsScreenBlank(true)
+        toggleScreen()
     }
 
     function logOffTask() {
-        setTotal(onTask + 1)
+        setTotal(total + 1)
         setRounds(rounds - 1)
+        setIsScreenBlank(true)
+        toggleScreen()
     }
 
     console.log("onTask: ", onTask, " total: ", total, " rounds: ", rounds)
-    // 5. After the interval has expired, the monster, catch phrase, the question, and the form (yes/no buttons) render
-    // 6. If the user selects "yes", the 'onTask' and 'total' state variables should increment by 1 and the 'rounds' variable should decrease by 1.
-    // 7. If the user selects "no", only the 'total' state variable should increment by 1 and the 'rounds' variable should decrease by 1.
-    // 8. The screen blanks out for another setTimout interval (think about a loop for this)
-    // 8. When 'rounds' = 0, send a POST request of the user's score to the server and route the user to the summary screen.
+
+    // 9. When 'rounds' = 0, send a POST request of the user's score to the server and route the user to the summary screen.
 
     return (
         <View style={styles.container}>
             { isScreenBlank ?
             <Image source={require('../assets/Transparent_Square.png')} />
             :
-            <Image source={require('../assets/monster.png')} style={styles.monster}/>
-            }
-            <Text style={styles.heading}>{title}</Text>
-            <Text style={styles.subheading}>{subtitle}</Text>
-            { isScreenBlank ?
-            <></>
-            :
             <>
+                <Image source={require('../assets/monster.png')} style={styles.monster}/>
+                <Text style={styles.heading}>Attention Attack!</Text>
+                <Text style={styles.subheading}>Are you focused and on task?</Text>
                 <Button
                     onPress={logOnTask}
                     title="Yes! 😎"
