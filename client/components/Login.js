@@ -32,7 +32,7 @@ export default function Login() {
             // r.json().then(user => setUser(user))
             clearText()
             navigation.navigate('MainNavigator', {
-              username: username
+              username
             })
         } else {
             if (r.status === 401) {

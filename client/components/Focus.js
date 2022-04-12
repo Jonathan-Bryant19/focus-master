@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native'
 
 export default function Focus() {
-    const [duration, setDuration] = useState(5)
+    const [duration, setDuration] = useState(1)
     const [interval, setInterval] = useState(0.0833)
     const navigation = useNavigation();
 
@@ -28,7 +28,7 @@ export default function Focus() {
                         style={styles.picker}
                         selectedValue={duration}
                         onValueChange={currentDuration => setDuration(currentDuration)}>
-                        <Picker.Item label='5 minutes' value={5} />
+                        <Picker.Item label='1 minute' value={1} />
                         <Picker.Item label='15 minutes' value={15} />
                         <Picker.Item label='30 minutes' value={30} />
                         <Picker.Item label='60 minutes' value={60} />
