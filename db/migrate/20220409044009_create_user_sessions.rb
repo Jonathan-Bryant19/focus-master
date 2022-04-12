@@ -4,8 +4,6 @@ class CreateUserSessions < ActiveRecord::Migration[7.0]
       t.integer :user_id
       t.integer :focus_session_id
       t.integer :score
-      t.integer :duration
-      t.integer :interval
 
       t.timestamps
     end

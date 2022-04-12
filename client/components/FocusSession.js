@@ -6,18 +6,14 @@ export default function FocusSession({ route }) {
     
     const [onTask, setOnTask] = useState(0)
     const [total, setTotal] = useState(0)
-    const [rounds, setRounds] = useState(3)
+    const [rounds, setRounds] = useState(2)
     const [isScreenBlank, setIsScreenBlank] = useState(true)
     const [endOfSession, setEndOfSession] = useState(false)
-    const roundedRounds = (Math.round(duration/interval))
-    const intervalMiliseconds = (Math.round(interval * 60) * 1000)
+    const intervalMiliseconds = (interval * 1000)
     
     useEffect(() => {
-        if (interval < 1) {
-            setRounds(roundedRounds)            
-        } else {
-            setRounds(duration/interval)
-        }
+        console.log("useEffect fired...")
+        setRounds(duration/interval)
         toggleScreen()
     }, [])
 
@@ -35,6 +31,7 @@ export default function FocusSession({ route }) {
             setIsScreenBlank(false)
         }
         if ((rounds - 1) > 0) {
+            console.log("setTimeout was called...")
             setTimeout(handleTime, intervalMiliseconds)
         } else if ((rounds - 1) === 0) {
             setEndOfSession(true)

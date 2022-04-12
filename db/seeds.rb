@@ -1,7 +1,32 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+User.all.destroy_all
+UserSession.all.destroy_all
+FocusSession.all.destroy_all
+
+puts "Seeding Users..."
+User.create(username: "Orion", email: "orion@adventure.com", password: "1919", password_confirmation: "1919")
+User.create(username: "Desiree", email: "desi@mywife.com", password: "1234", password_confirmation: "1234")
+User.create(username: "Hunter", email: "hunter@mystepson.com", password: "1234", password_confirmation: "1234")
+User.create(username: "Logan", email: "logan@myson.com", password: "1234", password_confirmation: "1234")
+User.create(username: "Jonathan", email: "jonathan@imtired.com", password: "1234", password_confirmation: "1234")
+
+puts "Seeding FocusSessions..."
+FocusSession.create(duration: 10, interval: 2)
+FocusSession.create(duration: 900, interval: 2)
+FocusSession.create(duration: 900, interval: 300)
+FocusSession.create(duration: 1800, interval: 2)
+FocusSession.create(duration: 1800, interval: 300)
+FocusSession.create(duration: 1800, interval: 600)
+FocusSession.create(duration: 1800, interval: 900)
+FocusSession.create(duration: 3600, interval: 2)
+FocusSession.create(duration: 3600, interval: 300)
+FocusSession.create(duration: 3600, interval: 600)
+FocusSession.create(duration: 3600, interval: 900)
+
+puts "Seeding UserSessions..."
+30.times {
+    UserSession.create(
+        user_id: User.all.sample.id,
+        focus_session_id: FocusSession.all.sample.id,
+        score: rand(20..100)
+    )
+}
