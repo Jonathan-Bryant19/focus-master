@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Button, StatusBar, Image, ScrollView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 export default function FocusSession({ route }) {
     const { duration, interval } = route.params
@@ -10,6 +11,7 @@ export default function FocusSession({ route }) {
     const [isScreenBlank, setIsScreenBlank] = useState(true)
     const [endOfSession, setEndOfSession] = useState(false)
     const intervalMiliseconds = (interval * 1000)
+    const navigation = useNavigation();
     
     useEffect(() => {
         console.log("useEffect fired...")
@@ -17,13 +19,16 @@ export default function FocusSession({ route }) {
         toggleScreen()
     }, [])
 
-    if (endOfSession) { 
-        handleEndOfSession()
-    }
-
-    function handleEndOfSession() {
-        console.log(`You were on task in ${onTask} of ${total} intervals. That's ${(onTask/total)*100}%!`)
-    }
+    // function handleEndOfSession() {
+    //     console.log(`You were on task in ${onTask} of ${total} intervals. That's ${(onTask/total)*100}%!`)
+    //     navigation.navigate("FocusSessionNavigator", {
+    //         screen: 'SessionSummary',
+    //         params: {
+    //             total,
+    //             onTask
+    //         }
+    //     })
+    // }
 
     function toggleScreen() {
         console.log("toggleScreen just fired and rounds = ", rounds)
@@ -31,7 +36,6 @@ export default function FocusSession({ route }) {
             setIsScreenBlank(false)
         }
         if ((rounds - 1) > 0) {
-            console.log("setTimeout was called...")
             setTimeout(handleTime, intervalMiliseconds)
         } else if ((rounds - 1) === 0) {
             setEndOfSession(true)
@@ -55,7 +59,15 @@ export default function FocusSession({ route }) {
 
     console.log("onTask: ", onTask, " total: ", total, " rounds: ", rounds)
 
-    // 9. When 'rounds' = 0, send a POST request of the user's score to the server and route the user to the summary screen.
+    if (endOfSession) { 
+        
+        navigation.navigate("SessionSummary", {
+            total,
+            onTask
+        }
+    )
+    }
+    
 
     return (
         <View style={styles.container}>

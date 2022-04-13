@@ -7,6 +7,9 @@ class UsersController < ApplicationController
         render json: user, status: :created
     end
 
+    def show
+        render json: current_user, status: :ok
+    end
 
     private
 
