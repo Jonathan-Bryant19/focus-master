@@ -97,8 +97,8 @@ export default function Signup() {
                 accessibilityLabel="Cancel signup"
             /> */}
             {errors ?       
-                <View >{errors.map(error => {
-                    return <Text style={styles.errors}>{error}</Text>
+                <View >{errors.map((error, index) => {
+                    return <Text style={styles.errors} key={index} >{error}</Text>
                 })}</View>
             : 
                 <></>

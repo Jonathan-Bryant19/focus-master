@@ -7,7 +7,7 @@ export default function Home({route}) {
     return (
         <View style={styles.container}>
             {/* <Text style={styles.heading}>Welcome, {route.params.user.username}!</Text> */}
-            <Text style={styles.subheading}>This is the Home screen</Text>
+            <Text style={styles.subheading}>This is the Home screen...</Text>
         </View>
     );
 }
