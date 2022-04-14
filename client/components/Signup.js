@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 export default function Signup() {
@@ -35,10 +35,13 @@ export default function Signup() {
             }
         })
     }
-
+    console.log(errors)
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Sign Up</Text>
+            <Image
+          style={styles.loginImage}
+          source={{uri: 'https://res.cloudinary.com/dhaek7qxl/image/upload/e_loop/v1649944809/merged_4_snpnx3.gif'}} />
             <Text>Username</Text>
             <TextInput
                 style={styles.input}
@@ -75,7 +78,13 @@ export default function Signup() {
                 }}
                 secureTextEntry
             />
-            <Button
+            <Pressable style={[styles.button, {backgroundColor: 'blue'}]} onPress={onSignup}>
+                <Text style={styles.buttonText} >Signup</Text>
+            </Pressable>
+            <Pressable style={[styles.button, {marginBottom: 10}]} onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.buttonText} >Cancel</Text>
+            </Pressable>
+            {/* <Button
                 onPress={onSignup}
                 title="Signup"
                 color="blue"
@@ -86,9 +95,11 @@ export default function Signup() {
                 title="Cancel"
                 color="red"
                 accessibilityLabel="Cancel signup"
-            />
-            {errors ? 
-                <Text>{errors}</Text>
+            /> */}
+            {errors ?       
+                <View >{errors.map(error => {
+                    return <Text style={styles.errors}>{error}</Text>
+                })}</View>
             : 
                 <></>
             }
@@ -105,26 +116,52 @@ function confirmPasswordsMatch(confirmationPassword, originalPassword) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'black',
         alignItems: 'center'
     },
     heading: {
-        marginTop: 50,
-        marginBottom: 50,
+        marginTop: 30,
+        marginBottom: 5,
         fontSize: 70,
-        fontWeight: 'bold'
-    },
-    subheading: {
-        marginTop: 20,
-        marginBottom: 20,
-        fontSize: 40,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+        fontFamily: 'rexlia'
     },
     input: {
         height: 40,
         width: 300,
-        margin: 12,
+        margin: 5,
         borderWidth: 1,
-        padding: 10
-    }
+        padding: 10,
+        backgroundColor: 'white',
+        fontFamily: 'rexlia'
+    },
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+        width: 150,
+        height: 60,
+        borderRadius: 15,
+        elevation: 3,
+        backgroundColor: 'red'
+      },
+      buttonText: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'rexlia'
+      },
+      errors: {
+        color: 'red',
+        marginTop: 2,
+        fontFamily: 'rexlia',
+        textAlign: 'center'
+      },
+      loginImage: {
+        height: 150,
+        width: 150,
+        marginTop: 10,
+        marginRight: 30
+      }
   });

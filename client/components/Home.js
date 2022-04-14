@@ -15,19 +15,24 @@ export default function Home({route}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
+        backgroundColor: 'black',
+        alignItems: 'center'
     },
     heading: {
-        marginTop: 50,
-        marginBottom: 50,
+        marginTop: 30,
+        marginBottom: 5,
         fontSize: 70,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+        fontFamily: 'rexlia'
     },
     subheading: {
-        marginTop: 20,
-        marginBottom: 20,
+        marginTop: 25,
+        marginBottom: 10,
         fontSize: 40,
-        fontWeight: 'bold'
-    }
-});
+        fontWeight: 'bold',
+        color: 'white',
+        fontFamily: 'rexlia'
+      }
+})

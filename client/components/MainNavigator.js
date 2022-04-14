@@ -4,9 +4,6 @@ import Home from './Home'
 import Focus from './Focus'
 import Profile from './Profile'
 
-
-
-
 export default function MainNavigator({ route }) {
     const Tab = createBottomTabNavigator()
     const [user, setUser] = useState(null)
@@ -29,7 +26,17 @@ export default function MainNavigator({ route }) {
     console.log("MainNavigator: ", user)
     
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                    backgroundColor: 'black',
+                    borderTopWidth: 0
+                }
+                // tabBarActiveTintColor: 'red',
+                // tabBarActiveBackgroundColor: 'black'
+            }}
+        >
             <Tab.Screen name="Home" component={Home} initialParams={{user: myUser}}/>
             <Tab.Screen name="Focus" component={Focus} />
             <Tab.Screen name="Profile" component={Profile} />

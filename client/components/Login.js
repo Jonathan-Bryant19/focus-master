@@ -58,7 +58,7 @@ export default function Login({route}) {
         <Text style={styles.heading}>Focus Master</Text>
         <Image
           style={styles.loginImage}
-          source={{uri: 'https://res.cloudinary.com/dhaek7qxl/image/upload/v1649887046/merged_1_icrx4q.gif'}} />
+          source={{uri: 'https://res.cloudinary.com/dhaek7qxl/image/upload/e_loop/v1649941839/ninga_idle_xcxtvg.gif'}} />
         <Text style={styles.subheading}>Login</Text>
         <TextInput
           style={styles.input}
@@ -99,19 +99,21 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   heading: {
-    marginTop: 70,
-    marginBottom: 5,
+    marginTop: 60,
+    marginBottom: 20,
     fontSize: 65,
     fontWeight: 'bold',
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'rexlia'
   },
   subheading: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 25,
+    marginBottom: 10,
     fontSize: 40,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'rexlia'
   },
   input: {
     height: 40,
@@ -119,7 +121,8 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    fontFamily: 'rexlia'
   },
   button: {
     alignItems: 'center',
@@ -133,16 +136,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 20
+    fontSize: 20,
+    fontFamily: 'rexlia'
   },
   errors: {
     color: 'red',
-    marginTop: 30
+    marginTop: 30,
+    fontFamily: 'rexlia'
   },
   loginImage: {
-    height: 150,
-    width: 150,
-    paddingBottom: 0,
-    paddingTop: 0
+    height: 175,
+    width: 175,
+    marginTop: 5
   }
 });
