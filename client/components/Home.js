@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput, Button, StatusBar } from 'react-native'
+import { StyleSheet, Text, View, Button, StatusBar, Image } from 'react-native'
 
 export default function Home({route}) {
     // route.params ? console.log("Home user: ", route.params.user.username) : console.log("loading...")
@@ -8,6 +8,8 @@ export default function Home({route}) {
         <View style={styles.container}>
             {/* <Text style={styles.heading}>Welcome, {route.params.user.username}!</Text> */}
             <Text style={styles.subheading}>This is the Home screen...</Text>
+            <Text style={styles.subheading}>Time since last session</Text>
+            <Text style={styles.subheading}>Sessions this week</Text>
         </View>
     );
 }
@@ -34,5 +36,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white',
         fontFamily: 'rexlia'
+      },
+      loginImage: {
+        height: 175,
+        width: 175,
+        marginTop: 5
       }
 })
