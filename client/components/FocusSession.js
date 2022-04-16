@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Button, StatusBar, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Pressable, StatusBar, Image, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 export default function FocusSession({ route }) {
@@ -18,17 +18,6 @@ export default function FocusSession({ route }) {
         setRounds(duration/interval)
         toggleScreen()
     }, [])
-
-    // function handleEndOfSession() {
-    //     console.log(`You were on task in ${onTask} of ${total} intervals. That's ${(onTask/total)*100}%!`)
-    //     navigation.navigate("FocusSessionNavigator", {
-    //         screen: 'SessionSummary',
-    //         params: {
-    //             total,
-    //             onTask
-    //         }
-    //     })
-    // }
 
     function toggleScreen() {
         console.log("toggleScreen just fired and rounds = ", rounds)
@@ -59,15 +48,12 @@ export default function FocusSession({ route }) {
 
     console.log("onTask: ", onTask, " total: ", total, " rounds: ", rounds)
 
-    if (endOfSession) { 
-        
+    if (endOfSession) {     
         navigation.navigate("SessionSummary", {
             total,
             onTask
         }
-    )
-    }
-    
+    )}
 
     return (
         <View style={styles.container}>
@@ -76,20 +62,13 @@ export default function FocusSession({ route }) {
             :
             <>
                 <Image source={require('../assets/monster.png')} style={styles.monster}/>
-                <Text style={styles.heading}>Attention Attack!</Text>
                 <Text style={styles.subheading}>Are you focused and on task?</Text>
-                <Button
-                    onPress={logOnTask}
-                    title="Yes! 😎"
-                    color="green"
-                    accessibilityLabel='Button to confirm you are on task'
-                />
-                <Button
-                    onPress={logOffTask}
-                    title="No! 😈"
-                    color="red"
-                    accessibilityLabel='Button to confirm you are off task'
-                />
+                <Pressable style={styles.button} onPress={logOnTask}>
+                    <Text style={styles.buttonText} >Yes! 😎</Text>
+                </Pressable>
+                <Pressable style={[styles.button, {backgroundColor: 'red'}]} onPress={logOffTask}>
+                    <Text style={styles.buttonText} >No! 😈</Text>
+                </Pressable>
             </>
             }
         </View>
@@ -108,19 +87,36 @@ const styles = StyleSheet.create({
         fontSize: 70,
         fontWeight: 'bold',
         color: 'white',
-        alignItems: 'center',
+        // alignItems: 'center',
         justifyContent: 'center'
     },
     subheading: {
-        // marginTop: 20,
-        // marginBottom: 20,
-        fontSize: 40,
+        marginTop: 20,
+        marginBottom: 20,
+        // alignItems: 'center',
+        fontSize: 25,
         fontWeight: 'bold',
         color: 'white'
     },
     monster: {
         height: 200,
         width: 200,
-        marginTop: 70
+        marginTop: 70,
+        alignSelf: 'center'
+    },
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+        width: 150,
+        height: 60,
+        borderRadius: 15,
+        elevation: 3,
+        backgroundColor: 'green'
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'rexlia'
     }
 });
