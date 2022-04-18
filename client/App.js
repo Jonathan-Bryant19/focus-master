@@ -25,8 +25,6 @@ export default function App() {
       })
   }, [])
 
-  console.log("App.js user: ", user)
-
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>

@@ -23,8 +23,6 @@ export default function MainNavigator({ route }) {
     }, [])
     
     const myUser = user
-    console.log("myUser: ", myUser)
-    console.log("MainNavigator: ", user)
     
     return (
         <Tab.Navigator

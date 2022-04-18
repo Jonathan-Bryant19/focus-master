@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, StatusBar, Image } from 'react-native'
 
 export default function Home({route}) {
     // route.params ? console.log("Home user: ", route.params.user.username) : console.log("loading...")
-    console.log("Home.js: ", route)
+
     return (
         <View style={styles.container}>
             {/* <Text style={styles.heading}>Welcome, {route.params.user.username}!</Text> */}
