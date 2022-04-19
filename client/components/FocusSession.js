@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Pressable, StatusBar, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image, ImageBackground, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 export default function FocusSession({ route }) {
@@ -11,28 +11,22 @@ export default function FocusSession({ route }) {
     const [rounds, setRounds] = useState(2)
     const [isScreenBlank, setIsScreenBlank] = useState(true)
     const [endOfSession, setEndOfSession] = useState(false)
-    const [heroGif, setHeroGif] = useState(require('../assets/characters/Black_Ninja_Idle.gif'))
-    const [monsterGif, setMonsterGif] = useState(require('../assets/characters/Boss2_idle.gif'))
+    const [animationGIF, setAnimationGIF] = useState(require('../assets/characters/idle.gif'))
     const [heroHP, setHeroHP] = useState(Math.floor((duration/interval) * 0.2))
     const [monsterHP, setMonsterHP] = useState(Math.ceil((duration/interval) * 0.8))
     // variables
     const intervalMiliseconds = (interval * 1000)
     const navigation = useNavigation();
-    // let heroHP = Math.floor((duration/interval) * 0.2)
     console.log("heroHP: ", heroHP)
-    // let monsterHP = Math.ceil((duration/interval) * 0.8)
     console.log("monsterHP: ", monsterHP)
     // gifs
-    const heroIdle = require('../assets/characters/Black_Ninja_Idle.gif')
-    const heroAttack = require('../assets/characters/Black_Ninja_Attack2.gif')
-    const heroRun = require('../assets/characters/Black_Ninja_Run.gif')
-    // const heroHurt = require('')
-    const monsterIdle = require('../assets/characters/Boss2_idle.gif')
-    const monsterAttack = require('../assets/characters/Boss2_attack2.gif')
-    const monsterRun = require('../assets/characters/Boss2_run.gif')
-    const monsterHurt = require('../assets/characters/Boss2_hit.gif')
-    const monsterDie = require('../assets/characters/Boss2_die.gif')
-    
+    const idle = require('../assets/characters/idle.gif')
+    const monsterAttack = require('../assets/characters/monster_attack.gif')
+    const heroAttack = require('../assets/characters/hero_attack.gif')
+    const monsterDie = require('../assets/characters/monster_die.gif')
+    const monsterFlee = require('../assets/characters/monster_flee.gif')
+    const heroFlee = require('../assets/characters/hero_flee.gif')
+    const heroDie = require('../assets/characters/hero_die.gif')
 
     useEffect(() => {
         setRounds(duration/interval)
@@ -50,37 +44,36 @@ export default function FocusSession({ route }) {
             setEndOfSession(true)
         }
     }
-    
-    function handleMonsterFlee() {
-        setHeroGif(heroRun)
-        setMonsterGif(monsterRun)
-    }
-
-    function handleMonsterDie() {
-        setHeroGif(heroIdle)
-        setMonsterGif(monsterDie)
-    }
 
     function handleCorrectImages() {
-        setHeroGif(heroAttack)
-        setMonsterGif(monsterHurt)
+        setAnimationGIF(heroAttack)     
         setMonsterHP(monsterHP - 1)
         if (monsterHP === 0) {
-            setTimeout(() => handleMonsterDie(), 1000)
+            setTimeout(() => setAnimationGIF(monsterDie), 1000)
             setTimeout(() => logOnTask(), 5000)
-        }
-        else if (monsterHP < 2) {
-            setTimeout(() => handleMonsterFlee(), 1000)
+        } else if (monsterHP < 2) {
+            setTimeout(() => setAnimationGIF(monsterFlee), 1000)
             setTimeout(() => logOnTask(), 2500)
         } else {
-            setTimeout(() => setHeroGif(heroIdle), 1000)
-            setTimeout(() => setMonsterGif(monsterIdle), 1000)
+            setTimeout(() => setAnimationGIF(idle), 1000)
             setTimeout(() => logOnTask(), 2500)
         }
     }
 
     function handleIncorrectImages() {
-        setMonsterGif(monsterAttack)
+        setAnimationGIF(monsterAttack)
+        setHeroHP(heroHP - 1)
+        if (heroHP <= 0) {
+            setTimeout(() => setAnimationGIF(heroDie), 1000)
+            setTimeout(() => setAnimationGIF(heroFlee), 3000)
+            setTimeout(() => logOffTask(), 5000)
+        } else if (heroHP < 2) {
+            setTimeout(() => setAnimationGIF(heroFlee), 1000)
+            setTimeout(() => logOffTask(), 2500)
+        } else {
+            setTimeout(() => setAnimationGIF(idle), 1000)
+            setTimeout(() => logOffTask(), 2500)
+        }
     }
 
     function logOnTask() {
@@ -118,8 +111,7 @@ export default function FocusSession({ route }) {
                     <View style={styles.healthBar}></View>
                 </View>    
                 <View style={styles.characterContainer}>
-                    <Image source={(heroGif)} style={styles.character} />
-                    <Image source={(monsterGif)} style={styles.character}/>
+                    <Image source={animationGIF} style={styles.character}/>
                 </View>
                 <Text style={styles.subheading}>Are you focused and on task?</Text>
                 <View style={styles.buttonContainer}>
@@ -191,11 +183,13 @@ const styles = StyleSheet.create({
         marginStart: 30,
     },
     characterContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        // width: 400,
+        // height: 400,
     },
     character: {
-        width: 200,
-        height: 200,
-        marginTop: 20
-    }
+        flex: 1,
+        marginTop: -20,
+        overflow: 'visible'
+    },
 });
