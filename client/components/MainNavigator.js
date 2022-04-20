@@ -71,8 +71,8 @@ export default function MainNavigator({ route }) {
                             source={require('../assets/icons/sword-cross.png')}
                             resizeMode="contain"
                             style={{
-                                width: 25,
-                                height: 25,
+                                width: 75,
+                                height: 75,
                                 tintColor: focused ? 'red' : 'blue'
                             }}
                         />

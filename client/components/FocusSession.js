@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 export default function FocusSession({ route }) {
     // props
     const { duration, interval } = route.params
+
     // state
     const [onTask, setOnTask] = useState(0)
     const [total, setTotal] = useState(0)
@@ -14,11 +15,18 @@ export default function FocusSession({ route }) {
     const [animationGIF, setAnimationGIF] = useState(require('../assets/characters/idle.gif'))
     const [heroHP, setHeroHP] = useState(Math.floor((duration/interval) * 0.2))
     const [monsterHP, setMonsterHP] = useState(Math.ceil((duration/interval) * 0.8))
+
     // variables
     const intervalMiliseconds = (interval * 1000)
+    const heroHealthBarDenominator = Math.floor((duration/interval) * 0.2)
+    const monsterHealthBarDenominator = Math.floor((duration/interval) * 0.8)
     const navigation = useNavigation();
+    let heroHealthBarWidth = ((heroHP/heroHealthBarDenominator) * 144)
+    let monsterHealthBarWidth = monsterHP < 0 ? 0 : ((monsterHP/monsterHealthBarDenominator) * 144)
+    
     console.log("heroHP: ", heroHP)
     console.log("monsterHP: ", monsterHP)
+
     // gifs
     const idle = require('../assets/characters/idle.gif')
     const monsterAttack = require('../assets/characters/monster_attack.gif')
@@ -32,6 +40,17 @@ export default function FocusSession({ route }) {
         setRounds(duration/interval)
         toggleScreen()
     }, [])
+
+    checkEndOfSession()
+
+    function checkEndOfSession() {
+        if (endOfSession) {
+            navigation.navigate("SessionSummary", {
+                total,
+                onTask
+            })
+        }
+    }
 
     function toggleScreen() {
         console.log("toggleScreen just fired and rounds = ", rounds)
@@ -62,15 +81,16 @@ export default function FocusSession({ route }) {
 
     function handleIncorrectImages() {
         setAnimationGIF(monsterAttack)
-        setHeroHP(heroHP - 1)
-        if (heroHP <= 0) {
+        if (heroHP === 0) {
             setTimeout(() => setAnimationGIF(heroDie), 1000)
             setTimeout(() => setAnimationGIF(heroFlee), 3000)
             setTimeout(() => logOffTask(), 5000)
         } else if (heroHP < 2) {
+            setHeroHP(heroHP - 1)
             setTimeout(() => setAnimationGIF(heroFlee), 1000)
             setTimeout(() => logOffTask(), 2500)
         } else {
+            setHeroHP(heroHP - 1)
             setTimeout(() => setAnimationGIF(idle), 1000)
             setTimeout(() => logOffTask(), 2500)
         }
@@ -93,12 +113,7 @@ export default function FocusSession({ route }) {
 
     console.log("onTask: ", onTask, " total: ", total, " rounds: ", rounds)
 
-    if (endOfSession) {
-            navigation.navigate("SessionSummary", {
-                total,
-                onTask
-            })
-        }
+    
 
     return (
         <View style={styles.container}>
@@ -107,8 +122,12 @@ export default function FocusSession({ route }) {
             :
             <>
                 <View style={styles.healthBarContainer}>
-                    <View style={styles.healthBar}></View>
-                    <View style={styles.healthBar}></View>
+                    <View style={styles.heroHealthContainer}>
+                        <View style={[styles.heroHealth, {width: heroHealthBarWidth}]}></View>
+                    </View>
+                    <View style={styles.monsterHealthContainer}>
+                        <View style={[styles.monsterHealth, {width: monsterHealthBarWidth}]}></View>
+                    </View>
                 </View>    
                 <View style={styles.characterContainer}>
                     <Image source={animationGIF} style={styles.character}/>
@@ -173,14 +192,29 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 20
     },
-    healthBar: {
+    heroHealthContainer: {
         height: 25,
-        width: 125,
-        backgroundColor: 'red',
+        width: 150,
         borderWidth: 3,
         borderColor: 'white',
         marginEnd: 30,
-        marginStart: 30,
+        marginStart: 50,
+    },
+    heroHealth: {
+        backgroundColor: 'red',
+        height: 19
+    },
+    monsterHealthContainer: {
+        height: 25,
+        width: 150,
+        borderWidth: 3,
+        borderColor: 'white',
+        marginEnd: 40,
+        marginStart: 20,
+    },
+    monsterHealth: {
+        backgroundColor: 'red',
+        height: 19
     },
     characterContainer: {
         flexDirection: 'row',

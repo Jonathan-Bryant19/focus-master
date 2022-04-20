@@ -40,8 +40,8 @@ export default function Signup() {
         <View style={styles.container}>
             <Text style={styles.heading}>Sign Up</Text>
             <Image
-          style={styles.loginImage}
-          source={{uri: 'https://res.cloudinary.com/dhaek7qxl/image/upload/e_loop/v1649944809/merged_4_snpnx3.gif'}} />
+                style={styles.signupImage}
+                source={require('../assets/characters/signup_screen.gif')} />
             <Text>Username</Text>
             <TextInput
                 style={styles.input}
@@ -84,18 +84,6 @@ export default function Signup() {
             <Pressable style={[styles.button, {marginBottom: 10}]} onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.buttonText} >Cancel</Text>
             </Pressable>
-            {/* <Button
-                onPress={onSignup}
-                title="Signup"
-                color="blue"
-                accessibilityLabel="Signup button"
-            />
-            <Button
-                onPress={() => navigation.navigate('Login')}
-                title="Cancel"
-                color="red"
-                accessibilityLabel="Cancel signup"
-            /> */}
             {errors ?       
                 <View >{errors.map((error, index) => {
                     return <Text style={styles.errors} key={index} >{error}</Text>
@@ -158,10 +146,11 @@ const styles = StyleSheet.create({
         fontFamily: 'rexlia',
         textAlign: 'center'
       },
-      loginImage: {
-        height: 150,
-        width: 150,
+      signupImage: {
+        height: 250,
+        width: 250,
         marginTop: 10,
-        marginRight: 30
+        marginLeft: 30,
+        marginBottom: -20
       }
   });
