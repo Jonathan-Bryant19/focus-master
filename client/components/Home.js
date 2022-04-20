@@ -51,14 +51,14 @@ export default function Home({route}) {
 
     return (
         <View style={styles.container}>
-            {user ? <Text style={styles.heading}>Welcome to Focus Master, {user.username}!</Text> : <Text style={styles.heading}>Welcome!</Text>}
+            {user ? <Text style={styles.heading}>Hello, {user.username}! Welcome to Focus Master!</Text> : <Text style={styles.heading}>Welcome!</Text>}
                 <Pressable onPress={handleFirstRowClick} ><Text style={styles.subheading}>This app is designed to leverage the concepts of self-observation and self-recording in order to train the mind to attend to a specific task.</Text></Pressable>
             <View style={styles.animationContainer}>
                 <Image source={firstRowAnimation} style={styles.animation}/>
             </View>
             <Text style={styles.subheading}>
                 <Pressable onPress={handleSecondRowClick} style={{marginEnd: -30, marginStart: 50}}>
-                    <Text style={styles.secondSubheading}>To start a session, choose an interval and duration from the Focus menu ({<Image source={focusIcon} style={styles.icon}/>}) and get to work! A "check in" will happen at your chosen intervals. Select your response and work to defeat the monster!</Text>
+                    <Text style={styles.secondSubheading}>To start a session, choose an interval and duration from the Focus menu ({<Image source={focusIcon} style={styles.icon}/>}) and get to work! A "check in" will happen at your chosen interval. Select your response and work to defeat the monster!</Text>
                 </Pressable>
             </Text>
             <View style={styles.animationContainer}>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
       },
     buttonText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 18,
         fontFamily: 'rexlia'
       },
     animationContainer: {

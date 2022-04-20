@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     heading: {
         marginTop: 20,
         marginBottom: 5,
-        fontSize: 70,
+        fontSize: 60,
         fontWeight: 'bold',
         color: 'white',
         textAlign: 'center',
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     subheading: {
         marginTop: 10,
         marginBottom: 10,
-        fontSize: 40,
+        fontSize: 30,
         fontWeight: 'bold',
         color: 'white',
         fontFamily: 'rexlia'
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         width: 200,
         height: 200,
+        marginBottom: 10,
         borderWidth: 3,
         borderColor: 'blue',
         borderRadius: 10

@@ -1,10 +1,24 @@
-import React from 'react'
-import { StyleSheet, Text, View, TextInput, Pressable, StatusBar } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, Alert, Pressable, StatusBar } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
 export default function Profile({route}) {
     // console.log(route.params.user)
     const navigation = useNavigation();
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        fetch('http://localhost:3000/me').then(r => {
+          if (r.ok) {
+              r.json().then(user => setUser(user))
+          } else {
+              if (r.status === 401) {
+                  console.log("You're not logged in...")
+                  console.log("App.js user: ", user)
+              }
+          }
+      })
+    }, [])
 
     const onLogout = () => {
         fetch('http://localhost:3000/logout', {
@@ -17,19 +31,39 @@ export default function Profile({route}) {
         })
     }
 
+    function deleteAccount() {
+        console.log("delete account...")
+        function handleConfirmDelete() {
+            fetch('http://localhost:3000/deleteaccount', {
+                method: 'DELETE'
+            }).then(r => {
+                if (r.ok) {
+                    setUser(null)
+                    navigation.navigate('Login')
+                }
+            })
+        }
+        Alert.alert(
+            "Warning!",
+            "You are about to delete your account. Are you sure you want to continue? You cannot undo this action and it also kinda makes us sad 🥺",
+            [
+                {text: 'DELETE', onPress: handleConfirmDelete},
+                {text: 'CANCEL', onPress: () => console.log("Cancel was pressed"), style: 'cancel'},
+            ]
+        )
+
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Profile</Text>
-            <Text style={styles.subheading}>This is the Profile screen</Text>
+            {user ? <Text style={styles.subheading}>Hello, {user.username}! This is the Profile screen. From here you can Logout or Delete your account.</Text> : <Text style={styles.subheading}>This is the Profile screen</Text>}
             <Pressable style={styles.button} onPress={onLogout}>
                 <Text style={styles.buttonText} >Logout</Text>
             </Pressable>
-        {/* <Button 
-            onPress={onLogout}
-            title="Logout"
-            color="red"
-            accessibilityLabel='Logout button'
-        /> */}
+            <Pressable style={[styles.button, {backgroundColor: 'red', marginTop: 50}]} onPress={deleteAccount}>
+                <Text style={styles.buttonText} >Delete Account</Text>
+            </Pressable>
         </View>
     );
 }
@@ -41,21 +75,23 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     heading: {
-        marginTop: 30,
-        marginBottom: 5,
-        fontSize: 70,
+        marginTop: 80,
+        marginBottom: 50,
+        fontSize: 40,
         fontWeight: 'bold',
         color: 'white',
         textAlign: 'center',
         fontFamily: 'rexlia'
     },
     subheading: {
-        marginTop: 25,
-        marginBottom: 10,
-        fontSize: 40,
+        marginTop: 20,
+        marginBottom: 175,
+        marginHorizontal: 20,
+        fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
-        fontFamily: 'rexlia'
+        fontFamily: 'rexlia',
+        textAlign: 'justify'
     },
     button: {
         alignItems: 'center',
@@ -70,7 +106,8 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 20,
-        fontFamily: 'rexlia'
+        fontFamily: 'rexlia',
+        textAlign: 'center'
     }
 });
 

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   
   get '/hello', to: 'application#hello_world'
 
-  resources :users, only: [:create, :show, :update]
+  resources :users, only: [:create, :show, :destroy]
   resources :sessions, only: [:create, :destroy]
 
   post '/signup', to: 'users#create'
@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   
   post '/newfocus', to: 'user_sessions#create'
   post '/findfocussessionid', to: 'focus_sessions#show'
+
+  delete '/deleteaccount', to: 'users#destroy'
 end

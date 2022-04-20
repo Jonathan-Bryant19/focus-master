@@ -48,7 +48,6 @@ export default function SessionSummary({route}) {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Session Summary</Text>
-            <Text style={styles.subheading}>This is the Session Summary screen</Text>
             <Text style={styles.subheading}>You were on task in {onTask} of {total} intervals. That's {(onTask/total)*100}%!</Text>
             <Pressable style={styles.button} onPress={handleOnPress}>
                 <Text style={styles.buttonText} >Again!</Text>
@@ -64,18 +63,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     heading: {
-        marginTop: 20,
-        marginBottom: 5,
-        fontSize: 70,
+        marginTop: 100,
+        marginBottom: 50,
+        fontSize: 40,
         fontWeight: 'bold',
         color: 'white',
         textAlign: 'center',
         fontFamily: 'rexlia'
     },
     subheading: {
-        marginTop: 10,
-        marginBottom: 10,
-        fontSize: 40,
+        marginTop: 20,
+        marginBottom: 50,
+        fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
         fontFamily: 'rexlia'

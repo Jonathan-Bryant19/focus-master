@@ -53,8 +53,8 @@ export default function MainNavigator({ route }) {
                             source={require('../assets/icons/house-solid.png')}
                             resizeMode="contain"
                             style={{
-                                width: 25,
-                                height: 25,
+                                width: 33,
+                                height: 33,
                                 tintColor: focused ? 'red' : 'blue'
                             }}
                         />
@@ -71,8 +71,8 @@ export default function MainNavigator({ route }) {
                             source={require('../assets/icons/sword-cross.png')}
                             resizeMode="contain"
                             style={{
-                                width: 75,
-                                height: 75,
+                                width: 70,
+                                height: 70,
                                 tintColor: focused ? 'red' : 'blue'
                             }}
                         />
@@ -89,8 +89,8 @@ export default function MainNavigator({ route }) {
                             source={require('../assets/icons/user-solid.png')}
                             resizeMode="contain"
                             style={{
-                                width: 25,
-                                height: 25,
+                                width: 33,
+                                height: 33,
                                 tintColor: focused ? 'red' : 'blue'
                             }}
                         />

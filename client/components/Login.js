@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   errors: {
     color: 'red',
-    marginTop: 30,
+    marginTop: 15,
     fontFamily: 'rexlia'
   },
   loginImage: {
