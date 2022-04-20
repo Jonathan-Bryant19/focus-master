@@ -35,7 +35,9 @@ export default function Signup() {
             }
         })
     }
+
     console.log(errors)
+    
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Sign Up</Text>

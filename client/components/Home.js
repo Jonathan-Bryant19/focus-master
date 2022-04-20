@@ -2,11 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button, StatusBar, Image, Linking, Pressable } from 'react-native'
 
 export default function Home({route}) {
+    // state
     const [user, setUser] = useState(null)
     const [firstRowAnimation, setFirstRowAnimation] = useState(require('../assets/home_transparent_background.png'))
+    const [secondRowAnimation, setSecondRowAnimation] = useState(require('../assets/home_transparent_background.png'))
+    // icon
     const focusIcon = require('../assets/icons/sword-cross.png')
+    // animations
     const empty = require('../assets/home_transparent_background.png')
-    const bat = require('../assets/characters/output-onlinegiftools.gif')
+    const batFlyLeft = require('../assets/characters/bat_fly_left.gif')
+    const batFlyRight = require('../assets/characters/bat_fly_right.gif')
+    const beeFlyLeft = require('../assets/characters/bee_fly_left.gif')
+    const beeFlyRight = require('../assets/characters/bee_fly_right.gif')
+    const foxRunLeft = require('../assets/characters/fox_run_left.gif')
+    const foxRunRight = require('../assets/characters/fox_run_right.gif')
+    const animationArray = [batFlyLeft, batFlyRight, beeFlyLeft, beeFlyRight, foxRunLeft, foxRunRight]
 
     useEffect(() => {
         fetch('http://localhost:3000/me').then(r => {
@@ -25,32 +35,36 @@ export default function Home({route}) {
         Linking.openURL('https://mail.google.com')
     }
 
-    function handleAnimationTiming() {
-        setTimeout(() => setFirstRowAnimation(bat), 1000)
-        // setTimeout(() => setFirstRowAnimation(empty), 2000)
+    function handleFirstRowClick() {
+        console.log("First row click")
+        const firstRow = animationArray[Math.floor(Math.random() * animationArray.length)]
+        console.log(firstRow)
+        setFirstRowAnimation(firstRow)
     }
 
-    handleAnimationTiming()
+    function handleSecondRowClick() {
+        console.log("First second click")
+        const secondRow = animationArray[Math.floor(Math.random() * animationArray.length)]
+        console.log(secondRow)
+        setSecondRowAnimation(secondRow)
+    }
 
     return (
         <View style={styles.container}>
             {user ? <Text style={styles.heading}>Welcome to Focus Master, {user.username}!</Text> : <Text style={styles.heading}>Welcome!</Text>}
-            <View style={styles.animationContainer}>
-                    <Image source={firstRowAnimation} style={styles.animation}/>
-            </View>
-            <Pressable >
-                <Text style={styles.subheading}>This app is designed to leverage the concepts of self-observation and self-recording in order to train the mind to attend to a specific task.</Text>
+                <Pressable onPress={handleFirstRowClick} ><Text style={styles.subheading}>This app is designed to leverage the concepts of self-observation and self-recording in order to train the mind to attend to a specific task.</Text></Pressable>
             <View style={styles.animationContainer}>
                 <Image source={firstRowAnimation} style={styles.animation}/>
             </View>
-            </Pressable>
             <Text style={styles.subheading}>
-                <Text style={styles.subheading}>To start a session, choose an interval and duration from the Focus menu ({<Image source={focusIcon} style={styles.icon}/>}) and get to work! A "check in" will happen at your chosen intervals. Select your response and work to defeat the monster!</Text>
+                <Pressable onPress={handleSecondRowClick} style={{marginEnd: -30, marginStart: 50}}>
+                    <Text style={styles.secondSubheading}>To start a session, choose an interval and duration from the Focus menu ({<Image source={focusIcon} style={styles.icon}/>}) and get to work! A "check in" will happen at your chosen intervals. Select your response and work to defeat the monster!</Text>
+                </Pressable>
             </Text>
             <View style={styles.animationContainer}>
-                <Image source={firstRowAnimation} style={styles.animation}/>
+                <Image source={secondRowAnimation} style={[styles.animation, {marginTop: -15}]}/>
             </View>
-            <Text style={styles.subheading}>Feedback is appreciated! Shoot me an email buy clicking the button below:</Text>
+            <Text style={[styles.subheading, {marginTop: -25}]}>Feedback is appreciated! Shoot me an email by clicking the button below:</Text>
             <Pressable style={[styles.button, {backgroundColor: 'blue'}]} onPress={sendEmail}>
                 <Text style={styles.buttonText}>Contact Me!</Text>
             </Pressable>
@@ -66,7 +80,7 @@ const styles = StyleSheet.create({
     },
     heading: {
         marginTop: 70,
-        marginBottom: 15,
+        marginBottom: 35,
         fontSize: 30,
         fontWeight: 'bold',
         color: 'white',
@@ -74,8 +88,6 @@ const styles = StyleSheet.create({
         fontFamily: 'rexlia'
     },
     subheading: {
-        marginTop: 0,
-        marginBottom: 10,
         marginHorizontal: 20,
         fontSize: 17,
         fontWeight: 'bold',
@@ -83,6 +95,13 @@ const styles = StyleSheet.create({
         fontFamily: 'rexlia',
         textAlign: 'justify'
       },
+    secondSubheading: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: 'white',
+        fontFamily: 'rexlia',
+        textAlign: 'justify'
+    },
     icon: {
           tintColor: 'red',
           height: 20,
@@ -91,7 +110,7 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 40,
         padding: 10,
         width: 150,
         height: 60,
@@ -106,7 +125,7 @@ const styles = StyleSheet.create({
       },
     animationContainer: {
         flexDirection: 'row',
-        height: 50,
+        height: 40,
         width: 400,
         alignContent: 'center',
     },

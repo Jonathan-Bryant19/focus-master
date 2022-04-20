@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native'
 
 export default function FocusSession({ route }) {
     // props
-    const { duration, interval } = route.params
-
+    const { duration, interval, focusSessionId } = route.params
+    console.log(focusSessionId)
     // state
     const [onTask, setOnTask] = useState(0)
     const [total, setTotal] = useState(0)
@@ -47,7 +47,8 @@ export default function FocusSession({ route }) {
         if (endOfSession) {
             navigation.navigate("SessionSummary", {
                 total,
-                onTask
+                onTask,
+                focusSessionId
             })
         }
     }

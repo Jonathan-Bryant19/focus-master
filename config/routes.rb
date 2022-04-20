@@ -6,9 +6,11 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
 
   post '/signup', to: 'users#create'
+  get '/me', to: 'users#show'
+
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   
-  get '/me', to: 'users#show'
-  
+  post '/newfocus', to: 'user_sessions#create'
+  post '/findfocussessionid', to: 'focus_sessions#show'
 end

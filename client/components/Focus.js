@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 export default function Focus() {
     const [duration, setDuration] = useState(10)
     const [interval, setInterval] = useState(2)
+    const [focusSessionId, setFocusSessionId] = useState(null)
+    const [errors, setErrors] = useState(null)
     const navigation = useNavigation();
 
     const onStartFocusSession = () => {
@@ -19,12 +21,34 @@ export default function Focus() {
                 }
             )
         } else {
-            console.log("Starting Focus Session...")
-            navigation.navigate("FocusSessionNavigator", {
-                screen: 'FocusSession',
-                params: {
+            fetch('http://localhost:3000/findfocussessionid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
                     duration,
                     interval
+                })
+            }).then(r => {
+                if (r.ok) {
+                    r.json().then(data => {
+                        setFocusSessionId(data) 
+                        console.log("Starting Focus Session...")
+                        navigation.navigate("FocusSessionNavigator", {
+                            screen: 'FocusSession',
+                            params: {
+                                duration,
+                                interval,
+                                focusSessionId: parseInt(data)
+                            }
+                        })          
+                    }
+                    )
+                } else {
+                    if (r.status === 401) {
+                        r.json().then(json => setErrors(json.error))
+                    }
                 }
             })
         }
