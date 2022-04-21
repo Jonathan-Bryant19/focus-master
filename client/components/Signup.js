@@ -80,12 +80,14 @@ export default function Signup() {
                 }}
                 secureTextEntry
             />
-            <Pressable style={[styles.button, {backgroundColor: 'blue'}]} onPress={onSignup}>
-                <Text style={styles.buttonText} >Signup</Text>
-            </Pressable>
-            <Pressable style={[styles.button, {marginBottom: 10}]} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.buttonText} >Cancel</Text>
-            </Pressable>
+            <View style={{flexDirection: 'row', marginTop: 10, marginBottom: 15}}>
+                <Pressable style={[styles.button, {backgroundColor: 'blue', marginEnd: 10}]} onPress={onSignup}>
+                    <Text style={styles.buttonText} >Signup</Text>
+                </Pressable>
+                <Pressable style={[styles.button, {marginStart: 10}]} onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.buttonText} >Cancel</Text>
+                </Pressable>
+            </View>
             {errors ?       
                 <View >{errors.map((error, index) => {
                     return <Text style={styles.errors} key={index} >{error}</Text>
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 15,
         width: 150,
         height: 60,
         borderRadius: 15,
@@ -151,8 +153,8 @@ const styles = StyleSheet.create({
       signupImage: {
         height: 250,
         width: 250,
-        marginTop: 10,
+        marginTop: 0,
         marginLeft: 30,
-        marginBottom: -20
+        marginBottom: -50
       }
   });

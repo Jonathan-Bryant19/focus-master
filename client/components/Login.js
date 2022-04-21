@@ -9,6 +9,10 @@ export default function Login({route}) {
   const [user, setUser] = useState(null)
   const navigation = useNavigation();
   const [errors, setErrors] = useState(null)
+  const heroIdle = require('../assets/characters/Black_Ninja_Idle3.gif')
+  const heroHit = require('../assets/characters/Black_Ninja_Hit.gif')
+  const heroRun = require('../assets/characters/Black_Ninja_Run_Offscreen.gif')
+  const [heroImage, setHeroImage] = useState(heroIdle)
 
   const clearText = () => {
     setUsername('')
@@ -31,6 +35,10 @@ export default function Login({route}) {
 
   const onLogin = e => {
     e.preventDefault()
+    function loginTransition() {
+      navigation.navigate('MainNavigator')
+      setTimeout(() => setHeroImage(heroIdle), 500)
+    }
     fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
@@ -44,10 +52,14 @@ export default function Login({route}) {
         if (r.ok) {
             r.json().then(user => setUser(user))
             clearText()
-            navigation.navigate('MainNavigator')
+            setHeroImage(heroRun)
+            setTimeout(() => loginTransition(), 1000)
+            // setTimeout(() => navigation.navigate('MainNavigator'), 1000)
         } else {
             if (r.status === 401) {
                 r.json().then(json => setErrors(json.error))
+                setHeroImage(heroHit)
+                setTimeout(() => setHeroImage(heroIdle), 1500)
             }
         }
     })
@@ -58,7 +70,7 @@ export default function Login({route}) {
         <Text style={styles.heading}>Focus Master</Text>
         <Image
           style={styles.loginImage}
-          source={{uri: 'https://res.cloudinary.com/dhaek7qxl/image/upload/e_loop/v1649941839/ninga_idle_xcxtvg.gif'}} />
+          source={heroImage} />
         <Text style={styles.subheading}>Login</Text>
         <TextInput
           style={styles.input}
@@ -145,8 +157,10 @@ const styles = StyleSheet.create({
     fontFamily: 'rexlia'
   },
   loginImage: {
-    height: 175,
-    width: 175,
-    marginTop: 5
+    height: 250,
+    width: 250,
+    marginTop: -35,
+    marginBottom: -45,
+    overflow: 'visible'
   }
 });
