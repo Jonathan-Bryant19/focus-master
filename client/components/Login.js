@@ -79,6 +79,7 @@ export default function Login({route}) {
           value={username}
           onChangeText={setUsername}
           clearButtonMode="always"
+          placeholderTextColor={'black'}
         />
         <TextInput
           style={styles.input}
@@ -87,6 +88,7 @@ export default function Login({route}) {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          placeholderTextColor={'black'}
         />
         <Pressable style={[styles.button, {backgroundColor: 'blue'}]} onPress={onLogin}>
           <Text style={styles.buttonText} >Login</Text>

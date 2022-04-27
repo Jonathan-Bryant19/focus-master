@@ -51,6 +51,7 @@ export default function Signup() {
                 placeholder="Type your username here"
                 value={username}
                 onChangeText={setUsername}
+                placeholderTextColor={'black'}
             />
             <Text>Email</Text>
             <TextInput
@@ -59,6 +60,7 @@ export default function Signup() {
                 placeholder="Type your email here"
                 value={email}
                 onChangeText={setEmail}
+                placeholderTextColor={'black'}
             />
             <Text>Password</Text>
             <TextInput
@@ -67,6 +69,7 @@ export default function Signup() {
                 placeholder="Type your password here"
                 value={password}
                 onChangeText={setPassword}
+                placeholderTextColor={'black'}
                 secureTextEntry
             />
             <Text>Confirm Password</Text>
@@ -78,6 +81,7 @@ export default function Signup() {
                 onSubmitEditing={(e) => {
                 confirmPasswordsMatch(e.nativeEvent.text, password);
                 }}
+                placeholderTextColor={'black'}
                 secureTextEntry
             />
             <View style={{flexDirection: 'row', marginTop: 10, marginBottom: 15}}>
