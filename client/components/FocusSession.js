@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 export default function FocusSession({ route }) {
     // props
     const { duration, interval, focusSessionId } = route.params
-    console.log(focusSessionId)
+   
     // state
     const [onTask, setOnTask] = useState(0)
     const [total, setTotal] = useState(0)
@@ -21,17 +21,40 @@ export default function FocusSession({ route }) {
     const heroHealthBarDenominator = Math.floor((duration/interval) * 0.2)
     const monsterHealthBarDenominator = Math.floor((duration/interval) * 0.8)
     const navigation = useNavigation();
-    let heroHealthBarWidth = ((heroHP/heroHealthBarDenominator) * 144)
-    let monsterHealthBarWidth = monsterHP < 0 ? 0 : ((monsterHP/monsterHealthBarDenominator) * 144)
     
-    console.log("heroHP: ", heroHP)
-    console.log("monsterHP: ", monsterHP)
+    let heroHealthBarWidth 
+    if (heroHP < 0) {
+        heroHealthBarWidth = 0
+    } else if (rounds > 0 && heroHP <= 0) {
+        heroHealthBarWidth = 10
+    } else {
+        heroHealthBarWidth = (heroHP/heroHealthBarDenominator) * 144
+    }
+    
+    // if (rounds > 0 && heroHP === 0) {
+    //     heroHealthBarWidth = 10
+    // } else if (rounds === 0 && heroHP <= 0) {
+    //     heroHealthBarWidth = 0
+    // } else {
+    //     heroHealthBarWidth = (heroHP/heroHealthBarDenominator) * 144
+    // }
+    
+    // let monsterHealthBarWidth 
+    // if (rounds > 0 && monsterHP <= 0) {
+    //     monsterHealthBarWidth = 0 + (rounds * 2)
+    // } else {
+    //     monsterHealthBarWidth = (monsterHP/monsterHealthBarDenominator) * 144
+    // }
+    // console.log("MonsterHP: ", monsterHP)
+    // let heroHealthBarWidth = ((heroHP/heroHealthBarDenominator) * 144)
+    let monsterHealthBarWidth = monsterHP < 0 ? 0 : ((monsterHP/monsterHealthBarDenominator) * 144)
 
     // gifs
     const idle = require('../assets/characters/idle.gif')
     const monsterAttack = require('../assets/characters/monster_attack.gif')
     const heroAttack = require('../assets/characters/hero_attack.gif')
     const monsterDie = require('../assets/characters/monster_die.gif')
+    const monsterToLife = require('../assets/characters/monster_to_life.gif')
     const monsterFlee = require('../assets/characters/monster_flee.gif')
     const heroFlee = require('../assets/characters/hero_flee.gif')
     const heroDie = require('../assets/characters/hero_die.gif')
@@ -54,7 +77,6 @@ export default function FocusSession({ route }) {
     }
 
     function toggleScreen() {
-        console.log("toggleScreen just fired and rounds = ", rounds)
         function handleTime() {
             setIsScreenBlank(false)
         }
@@ -66,12 +88,17 @@ export default function FocusSession({ route }) {
     }
 
     function handleCorrectImages() {
-        setAnimationGIF(heroAttack)     
+        setAnimationGIF(heroAttack)   
         setMonsterHP(monsterHP - 1)
         if (monsterHP === 0) {
             setTimeout(() => setAnimationGIF(monsterDie), 1000)
             setTimeout(() => logOnTask(), 5000)
         } else if (monsterHP < 2) {
+            setTimeout(() => setAnimationGIF(monsterDie), 1000)
+            setTimeout(() => setAnimationGIF(monsterToLife), 2000)
+            setTimeout(() => setAnimationGIF(monsterFlee), 3000)
+            setTimeout(() => logOnTask(), 5000)
+        } else if (monsterHP < 3) {
             setTimeout(() => setAnimationGIF(monsterFlee), 1000)
             setTimeout(() => logOnTask(), 2500)
         } else {
@@ -82,7 +109,8 @@ export default function FocusSession({ route }) {
 
     function handleIncorrectImages() {
         setAnimationGIF(monsterAttack)
-        if (heroHP === 0) {
+        if (heroHP <= 0) {
+            setHeroHP(heroHP - 1)
             setTimeout(() => setAnimationGIF(heroDie), 1000)
             setTimeout(() => setAnimationGIF(heroFlee), 3000)
             setTimeout(() => logOffTask(), 5000)
@@ -111,9 +139,6 @@ export default function FocusSession({ route }) {
         setIsScreenBlank(true)
         toggleScreen()
     }
-
-    console.log("onTask: ", onTask, " total: ", total, " rounds: ", rounds)
-
     
 
     return (
