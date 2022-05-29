@@ -17,8 +17,6 @@
   <p align="center">
     Focus Master leverages the principles of self-observation and self-recording to increase an individual’s ability to attend to a specific task.
     <br />
-    <a href="https://github.com/Jonathan-Bryant19/focus-master"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://www.youtube.com/watch?v=9kOPlLq_Bn4&t">View Demo</a>
     ·
@@ -26,6 +24,7 @@
     ·
     <a href="https://github.com/Jonathan-Bryant19/focus-master/issues">Request Feature</a>
   </p>
+  <br />
 </div>
 
 
@@ -59,7 +58,7 @@
 
 <div align="center">
   <a href="https://github.com/Jonathan-Bryant19/focus-master">
-    <img src="https://res.cloudinary.com/dhaek7qxl/image/upload/e_loop/v1653693807/Focus-Master/hero-attack_wadagc.gif" alt="Logo" width="300" height="617">
+    <img src="https://res.cloudinary.com/dhaek7qxl/image/upload/v1653853389/Focus-Master/focus-master-gif-demo_vcarzg.gif" alt="app demo gif" width="300" height="617">
 </a>
 </div>
 
@@ -81,7 +80,7 @@ Focus master leverages the principles of self-observation and self-recording to 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these example steps.
 
 
 ### Installation
