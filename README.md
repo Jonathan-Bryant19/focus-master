@@ -8,7 +8,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Jonathan-Bryant19/focus-master">
-    <img src="images/Focus Master Logo.png" alt="Logo" width="100" height="100">
+    <img src="images/focus-master-logo.png" alt="Logo" width="100" height="100">
   </a>
 
 <br />
@@ -58,7 +58,7 @@
 
 <div align="center">
   <a href="https://github.com/Jonathan-Bryant19/focus-master">
-    <img src="https://res.cloudinary.com/dhaek7qxl/image/upload/v1653853389/Focus-Master/focus-master-gif-demo_vcarzg.gif" alt="app demo gif" width="300" height="617">
+    <img src="./images/focus-master-gif-demo.gif" alt="app demo gif" width="300" height="617">
 </a>
 </div>
 
@@ -87,7 +87,7 @@ To get a local copy up and running follow these example steps.
 
 Currently, Focus Master is built to run off XCode's Simulator. Although it won't need to be open to launch, be sure that the most recent version of XCode is installed along with a current iOS simulator. 
 
-1. `cd` into the `client` folder and start Metro:
+1. Fork and clone the repo, then `cd` into the `client` folder and start Metro:
 ```sh
 npx react-native start
 ```
