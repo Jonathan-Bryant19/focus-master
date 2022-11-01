@@ -35,8 +35,6 @@ export default function Signup() {
             }
         })
     }
-
-    console.log(errors)
     
     return (
         <View style={styles.container}>
@@ -44,7 +42,6 @@ export default function Signup() {
             <Image
                 style={styles.signupImage}
                 source={require('../assets/characters/signup_screen.gif')} />
-            <Text>Username</Text>
             <TextInput
                 style={styles.input}
                 label="Username"
@@ -53,7 +50,6 @@ export default function Signup() {
                 onChangeText={setUsername}
                 placeholderTextColor={'black'}
             />
-            <Text>Email</Text>
             <TextInput
                 style={styles.input}
                 label="Email"
@@ -62,7 +58,6 @@ export default function Signup() {
                 onChangeText={setEmail}
                 placeholderTextColor={'black'}
             />
-            <Text>Password</Text>
             <TextInput
                 style={styles.input}
                 label="Password"
@@ -72,15 +67,11 @@ export default function Signup() {
                 placeholderTextColor={'black'}
                 secureTextEntry
             />
-            <Text>Confirm Password</Text>
             <TextInput
                 style={styles.input}
                 label="Confirm password"
                 placeholder="Re-type your password here"
                 onChangeText={setPasswordConfirmation}
-                onSubmitEditing={(e) => {
-                confirmPasswordsMatch(e.nativeEvent.text, password);
-                }}
                 placeholderTextColor={'black'}
                 secureTextEntry
             />
@@ -103,12 +94,6 @@ export default function Signup() {
     );
 }
 
-function confirmPasswordsMatch(confirmationPassword, originalPassword) {
-    if (confirmationPassword !== originalPassword) {
-      alert('Passwords do not match. Please try again.');
-    }
-  }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -127,7 +112,7 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         width: 300,
-        margin: 5,
+        margin: 10,
         borderWidth: 1,
         padding: 10,
         backgroundColor: 'white',
@@ -157,8 +142,8 @@ const styles = StyleSheet.create({
       signupImage: {
         height: 250,
         width: 250,
-        marginTop: 0,
+        marginTop: 5,
         marginLeft: 30,
-        marginBottom: -50
+        marginBottom: -25
       }
   });

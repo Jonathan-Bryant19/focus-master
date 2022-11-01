@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, StatusBar, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, StatusBar, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function Login({route}) {
+export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -54,7 +54,6 @@ export default function Login({route}) {
             clearText()
             setHeroImage(heroRun)
             setTimeout(() => loginTransition(), 1000)
-            // setTimeout(() => navigation.navigate('MainNavigator'), 1000)
         } else {
             if (r.status === 401) {
                 r.json().then(json => setErrors(json.error))

@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import MainNavigator from './components/MainNavigator';
-import FocusSessionNavigator from './components/FocusSessionNavigator';
-import { useNavigation } from '@react-navigation/native';
+import Login from './Login'
+import Signup from './Signup'
+import MainNavigator from './MainNavigator';
+import FocusSessionNavigator from './FocusSessionNavigator';
 
 export default function App() {
-  // const navigation = useNavigation();
   const Stack = createStackNavigator();
   const [user, setUser] = useState(null);
 
@@ -28,18 +26,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {/* {user ? 
-          <>
-            <Stack.Screen name="MainNavigator" component={MainNavigator} />
-            <Stack.Screen name="FocusSessionNavigator" component={FocusSessionNavigator} />
-            <Stack.Screen name="Login" component={Login} initialParams={user}/>
-          </>
-        :
-          <>
-            <Stack.Screen name="Login" component={Login} initialParams={user}/>
-            <Stack.Screen name="Signup" component={Signup} />
-          </>
-        } */}
         <Stack.Screen name="Login" component={Login} initialParams={user} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="MainNavigator" component={MainNavigator} initialParams={user}/>
