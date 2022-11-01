@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Alert, Pressable, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
-export default function Profile({route}) {
-    // console.log(route.params.user)
+export default function Profile() {
     const navigation = useNavigation()
     const profileImageIdle = require('../assets/characters/Robot_Idle.gif')
     const profileImageCrouch = require('../assets/characters/Robot_Crouch.gif')
@@ -28,7 +27,7 @@ export default function Profile({route}) {
         function logoutTransition() {
             setUser(null)
             navigation.navigate('Login')
-            setTimeout(() => setProfileImage(profileImageIdle), 800)
+            // setTimeout(() => setProfileImage(profileImageIdle), 800) // 800
         }
         fetch('http://localhost:3000/logout', {
             method: 'DELETE'

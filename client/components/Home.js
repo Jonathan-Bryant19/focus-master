@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Button, StatusBar, Image, Linking, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, Linking, Pressable } from 'react-native'
 
-export default function Home({route}) {
+export default function Home() {
     // state
     const [user, setUser] = useState(null)
-    const [firstRowAnimation, setFirstRowAnimation] = useState(require('../assets/home_transparent_background.png'))
-    const [secondRowAnimation, setSecondRowAnimation] = useState(require('../assets/home_transparent_background.png'))
+    const [firstRowAnimation, setFirstRowAnimation] = useState(null)
+    const [secondRowAnimation, setSecondRowAnimation] = useState(null)
     // icon
     const focusIcon = require('../assets/icons/sword-cross.png')
     // animations
-    const empty = require('../assets/home_transparent_background.png')
     const batFlyLeft = require('../assets/characters/bat_fly_left.gif')
     const batFlyRight = require('../assets/characters/bat_fly_right.gif')
     const beeFlyLeft = require('../assets/characters/bee_fly_left.gif')
@@ -30,23 +29,19 @@ export default function Home({route}) {
           }
       })
     }, [])
-
+    
     function sendEmail() {
         Linking.openURL('https://mail.google.com')
     }
 
     function handleFirstRowClick() {
-        console.log("First row click")
-        const firstRow = animationArray[Math.floor(Math.random() * animationArray.length)]
-        console.log(firstRow)
-        setFirstRowAnimation(firstRow)
+        const randomAnimation = animationArray[Math.floor(Math.random() * animationArray.length)]
+        setFirstRowAnimation(randomAnimation)
     }
 
     function handleSecondRowClick() {
-        console.log("First second click")
-        const secondRow = animationArray[Math.floor(Math.random() * animationArray.length)]
-        console.log(secondRow)
-        setSecondRowAnimation(secondRow)
+        const randomAnimation = animationArray[Math.floor(Math.random() * animationArray.length)]
+        setSecondRowAnimation(randomAnimation)
     }
 
     return (

@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, Image, View } from 'react-native'
 import Home from './Home'
 import Focus from './Focus'
 import Profile from './Profile'
 
-export default function MainNavigator({ route }) {
+export default function MainNavigator() {
     const Tab = createBottomTabNavigator()
     const [user, setUser] = useState(null)
-    // console.log(route.params.user)
-    
+
     useEffect(() => {
         fetch('http://localhost:3000/me').then(r => {
             if (r.ok) {
@@ -21,8 +20,6 @@ export default function MainNavigator({ route }) {
             }
         })
     }, [])
-    
-    const myUser = user
     
     return (
         <Tab.Navigator
@@ -37,16 +34,13 @@ export default function MainNavigator({ route }) {
                     left: 20,
                     right: 20,
                     elevation: 0,
-                    // backgroundColor: '#fff',
                     borderRadius: 15,
                     height: 90,
                     ...styles.shadow
                 }
-                // tabBarActiveTintColor: 'red',
-                // tabBarActiveBackgroundColor: 'black'
             }}
         >
-            <Tab.Screen name="Home" component={Home} initialParams={{user: myUser}} options={{
+            <Tab.Screen name="Home" component={Home} options={{
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
                         <Image 
@@ -58,7 +52,7 @@ export default function MainNavigator({ route }) {
                                 tintColor: focused ? 'red' : 'blue'
                             }}
                         />
-                        <Text>
+                        <Text >
                             
                         </Text>
                     </View>
@@ -102,7 +96,7 @@ export default function MainNavigator({ route }) {
             }}/>
         </Tab.Navigator>
     )
-  }
+}
 
 const styles = StyleSheet.create({
     shadow: {
@@ -116,8 +110,8 @@ const styles = StyleSheet.create({
         elevation: 5 // applicable to android only
     },
     loginImage: {
-    height: 175,
-    width: 175,
-    marginTop: 5
-  }
+        height: 175,
+        width: 175,
+        marginTop: 5
+    }
 })
