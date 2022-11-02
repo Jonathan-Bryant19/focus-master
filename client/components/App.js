@@ -16,8 +16,7 @@ export default function App() {
               r.json().then(user => setUser(user))
           } else {
               if (r.status === 401) {
-                  console.log("You're not logged in...")
-                  console.log("App.js user: ", user)
+                  console.log("User is not logged in...")
               }
           }
       })

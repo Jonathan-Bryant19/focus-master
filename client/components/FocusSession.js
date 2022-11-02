@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Pressable, Image, ImageBackground, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 export default function FocusSession({ route }) {
@@ -21,32 +21,7 @@ export default function FocusSession({ route }) {
     const heroHealthBarDenominator = Math.floor((duration/interval) * 0.2)
     const monsterHealthBarDenominator = Math.floor((duration/interval) * 0.8)
     const navigation = useNavigation();
-    
-    let heroHealthBarWidth 
-    if (heroHP < 0) {
-        heroHealthBarWidth = 0
-    } else if (rounds > 0 && heroHP <= 0) {
-        heroHealthBarWidth = 10
-    } else {
-        heroHealthBarWidth = (heroHP/heroHealthBarDenominator) * 144
-    }
-    
-    // if (rounds > 0 && heroHP === 0) {
-    //     heroHealthBarWidth = 10
-    // } else if (rounds === 0 && heroHP <= 0) {
-    //     heroHealthBarWidth = 0
-    // } else {
-    //     heroHealthBarWidth = (heroHP/heroHealthBarDenominator) * 144
-    // }
-    
-    // let monsterHealthBarWidth 
-    // if (rounds > 0 && monsterHP <= 0) {
-    //     monsterHealthBarWidth = 0 + (rounds * 2)
-    // } else {
-    //     monsterHealthBarWidth = (monsterHP/monsterHealthBarDenominator) * 144
-    // }
-    // console.log("MonsterHP: ", monsterHP)
-    // let heroHealthBarWidth = ((heroHP/heroHealthBarDenominator) * 144)
+    let heroHealthBarWidth = (rounds > 0 && heroHP <= 0) ? heroHealthBarWidth = 10 : heroHealthBarWidth = (heroHP/heroHealthBarDenominator) * 144
     let monsterHealthBarWidth = monsterHP < 0 ? 0 : ((monsterHP/monsterHealthBarDenominator) * 144)
 
     // gifs
@@ -77,11 +52,8 @@ export default function FocusSession({ route }) {
     }
 
     function toggleScreen() {
-        function handleTime() {
-            setIsScreenBlank(false)
-        }
         if ((rounds - 1) > 0) {
-            setTimeout(handleTime, intervalMiliseconds)
+            setTimeout(() => setIsScreenBlank(false), intervalMiliseconds)
         } else if ((rounds - 1) === 0) {
             setEndOfSession(true)
         }

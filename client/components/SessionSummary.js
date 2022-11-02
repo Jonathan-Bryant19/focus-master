@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, TextInput, Pressable, StatusBar } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
 export default function SessionSummary({route}) {
@@ -22,9 +22,6 @@ export default function SessionSummary({route}) {
     }, [])
 
     function handleOnPress() {
-        console.log("user_id: ", user.id)
-        console.log("focus_session_id: ", focusSessionId)
-        console.log("score: ", Math.round(onTask/total * 100))
         const myScore = Math.round(onTask/total * 100)
         fetch('http://localhost:3000/newfocus', {
             method: 'POST',
@@ -38,9 +35,17 @@ export default function SessionSummary({route}) {
             })
         }).then(r => {
             if (r.ok) {
-                navigation.navigate('Focus')
+                navigation.navigate('FocusSetup')
             } else if (r.status === 422) {
                 r.json().then(json => setErrors(json.errors))
+                Alert.alert(
+                    "Server Error",
+                    {errors},
+                    {
+                        text: "OK",
+                        onPress: () => navigation.navigate('FocusSetup')
+                    }
+                )
             }
         })
     }
