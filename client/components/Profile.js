@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Alert, Pressable, Image } from 'react-native'
+import { StyleSheet, Text, View, Alert, Pressable, Image, ScrollView, ActivityIndicator, RefreshControl } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
 export default function Profile() {
@@ -10,6 +10,7 @@ export default function Profile() {
     const [user, setUser] = useState(null)
     const [profileImage, setProfileImage] = useState(profileImageIdle)
     const [userData, setUserData] = useState(null)
+    const [refreshing, setRefreshing] = useState(false)
     const userStats = {
         "totalSessions": 0,
         "baselineAverage": 0,
@@ -17,9 +18,17 @@ export default function Profile() {
     }
 
     useEffect(() => {
+        loadUserData()
+    }, [])
+
+    function loadUserData() {
+        setRefreshing(true)
         fetch('http://localhost:3000/me').then(r => {
             if (r.ok) {
-                r.json().then(user => setUser(user))
+                r.json().then(user => {
+                    setUser(user)
+                    setRefreshing(false)
+                })
             } else {
                 if (r.status === 401) {
                     console.log("You're not logged in...")
@@ -30,12 +39,12 @@ export default function Profile() {
         fetch('http://localhost:3000/userstats').then(r => {
             if (r.ok) {
                 r.json().then(setUserData)
+                console.log("fetch happened")
             }
         })
-    }, [])
+    }
 
     if (userData) {
-        // console.log(userData)
         const firstTenSessions = userData.slice(0, 10)
         const lastTenSessions = userData.slice(userData.length - 10)
         userStats["totalSessions"] = userData.length
@@ -95,39 +104,52 @@ export default function Profile() {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.heading}>Profile</Text>
-            {user && userData ? 
-            <View>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.column1}>Username:  </Text>
-                    <Text style={styles.column2}>{user.username}</Text>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.column1}>Total Sessions:  </Text>
-                    <Text style={styles.column2}>{userStats["totalSessions"]}</Text>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.column1}>Baseline Average:  </Text>
-                    <Text style={styles.column2}>{userStats["baselineAverage"]}%</Text>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.column1}>Current Average:  </Text>
-                    <Text style={styles.column2}>{userStats["currentAverage"]}%</Text>
-                </View>
-            </View> 
-            : 
-            <Text style={styles.subheading}>This is the Profile screen</Text>}
-            <Image
-                style={styles.profileImage}
-                source={profileImage} />
-            <Pressable style={styles.button} onPress={onLogout}>
-                <Text style={styles.buttonText} >Logout</Text>
-            </Pressable>
-            <Pressable style={[styles.button, {backgroundColor: 'red', marginTop: 30}]} onPress={deleteAccount}>
-                <Text style={styles.buttonText} >Delete Account</Text>
-            </Pressable>
-        </View>
+        <ScrollView 
+            style={styles.scrollView}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={loadUserData}
+                    tintColor={'white'}
+                    title={'Grabbing updated data...'}
+                    titleColor={'white'}
+                />
+            }
+        >
+            <View style={styles.container}>
+                <Text style={styles.heading}>Profile</Text>
+                {user && userData ? 
+                <View>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.column1}>Username:  </Text>
+                        <Text style={styles.column2}>{user.username}</Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.column1}>Total Sessions:  </Text>
+                        <Text style={styles.column2}>{userStats["totalSessions"]}</Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.column1}>Baseline Average:  </Text>
+                        <Text style={styles.column2}>{userStats["baselineAverage"]}%</Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.column1}>Current Average:  </Text>
+                        <Text style={styles.column2}>{userStats["currentAverage"]}%</Text>
+                    </View>
+                </View> 
+                : 
+                <Text style={styles.subheading}>This is the Profile screen</Text>}
+                <Image
+                    style={styles.profileImage}
+                    source={profileImage} />
+                <Pressable style={styles.button} onPress={onLogout}>
+                    <Text style={styles.buttonText} >Logout</Text>
+                </Pressable>
+                <Pressable style={[styles.button, {backgroundColor: 'red', marginTop: 30}]} onPress={deleteAccount}>
+                    <Text style={styles.buttonText} >Delete Account</Text>
+                </Pressable>
+            </View>
+        </ScrollView>
     );
 }
 
@@ -187,6 +209,9 @@ const styles = StyleSheet.create({
         height: 250,
         width: 250,
         overflow: 'visible'
+    },
+    scrollView: {
+        backgroundColor: 'black'
     }
 });
 
