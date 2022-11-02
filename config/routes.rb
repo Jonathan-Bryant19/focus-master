@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   
   post '/newfocus', to: 'user_sessions#create'
+  get '/userstats', to: 'user_sessions#index'
+
   post '/findfocussessionid', to: 'focus_sessions#show'
 
   delete '/deleteaccount', to: 'users#destroy'

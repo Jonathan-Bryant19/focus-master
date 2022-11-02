@@ -9,19 +9,47 @@ export default function Profile() {
     const profileImageDie = require('../assets/characters/Robot_Die.gif')
     const [user, setUser] = useState(null)
     const [profileImage, setProfileImage] = useState(profileImageIdle)
+    const [userData, setUserData] = useState(null)
+    const userStats = {
+        "totalSessions": 0,
+        "baselineAverage": 0,
+        "currentAverage": 0
+    }
 
     useEffect(() => {
         fetch('http://localhost:3000/me').then(r => {
-          if (r.ok) {
-              r.json().then(user => setUser(user))
-          } else {
-              if (r.status === 401) {
-                  console.log("You're not logged in...")
-                  console.log("App.js user: ", user)
-              }
-          }
-      })
+            if (r.ok) {
+                r.json().then(user => setUser(user))
+            } else {
+                if (r.status === 401) {
+                    console.log("You're not logged in...")
+                    console.log("App.js user: ", user)
+                }
+            }
+        })
+        fetch('http://localhost:3000/userstats').then(r => {
+            if (r.ok) {
+                r.json().then(setUserData)
+            }
+        })
     }, [])
+
+    if (userData) {
+        // console.log(userData)
+        const firstTenSessions = userData.slice(0, 10)
+        const lastTenSessions = userData.slice(userData.length - 10)
+        userStats["totalSessions"] = userData.length
+        let total = 0
+        firstTenSessions.forEach(session => {
+            total += session.score
+        })
+        userStats["baselineAverage"] = Math.round(total/10)
+        total = 0
+        lastTenSessions.forEach(session => {
+            total += session.score
+        })
+        userStats["currentAverage"] = Math.round(total/10)
+    }
 
     const onLogout = () => {
         function logoutTransition() {
@@ -69,7 +97,27 @@ export default function Profile() {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Profile</Text>
-            {user ? <Text style={styles.subheading}>Hello, {user.username}! This is the Profile screen. From here you can Logout or Delete your account.</Text> : <Text style={styles.subheading}>This is the Profile screen</Text>}
+            {user && userData ? 
+            <View>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.column1}>Username:  </Text>
+                    <Text style={styles.column2}>{user.username}</Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.column1}>Total Sessions:  </Text>
+                    <Text style={styles.column2}>{userStats["totalSessions"]}</Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.column1}>Baseline Average:  </Text>
+                    <Text style={styles.column2}>{userStats["baselineAverage"]}%</Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.column1}>Current Average:  </Text>
+                    <Text style={styles.column2}>{userStats["currentAverage"]}%</Text>
+                </View>
+            </View> 
+            : 
+            <Text style={styles.subheading}>This is the Profile screen</Text>}
             <Image
                 style={styles.profileImage}
                 source={profileImage} />
@@ -91,7 +139,7 @@ const styles = StyleSheet.create({
     },
     heading: {
         marginTop: 80,
-        marginBottom: 40,
+        marginBottom: 30,
         fontSize: 40,
         fontWeight: 'bold',
         color: 'white',
@@ -107,6 +155,16 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'rexlia',
         textAlign: 'justify'
+    },
+    column1: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'rexlia'
+    },
+    column2: {
+        color: 'red',
+        fontSize: 20,
+        fontFamily: 'rexlia'
     },
     button: {
         alignItems: 'center',

@@ -1,5 +1,9 @@
 class UserSessionsController < ApplicationController
 
+    def index
+        render json: UserSession.where({user_id: current_user.id})
+    end
+    
     def create
         render json: UserSession.create!(user_session_params), status: :created
     end
