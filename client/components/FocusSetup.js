@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Alert, Pressable, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Alert, Pressable } from 'react-native'
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native'
 
 export default function Focus() {
     const [duration, setDuration] = useState(10)
     const [interval, setInterval] = useState(2)
-    const [focusSessionId, setFocusSessionId] = useState(null)
     const [errors, setErrors] = useState(null)
     const navigation = useNavigation();
 
@@ -33,8 +32,6 @@ export default function Focus() {
             }).then(r => {
                 if (r.ok) {
                     r.json().then(data => {
-                        setFocusSessionId(data) 
-                        console.log("Starting Focus Session...")
                         navigation.navigate("FocusSessionNavigator", {
                             screen: 'FocusSession',
                             params: {
@@ -47,22 +44,31 @@ export default function Focus() {
                     )
                 } else {
                     if (r.status === 401) {
-                        r.json().then(json => setErrors(json.error))
+                        r.json().then(json => {
+                            setErrors(json.error)
+                            Alert.alert(
+                                "Unauthorized",
+                                {errors},
+                                {
+                                    text: "OK",
+                                    onPress: () => console.log("Unauthorized action acknowledged")
+                                }
+                            )
+                        })                     
                     }
                 }
             })
         }
     }
-
+    
     return (
         <View style={styles.container}>
-            
             <Text style={styles.heading}>Focus</Text>
             <Text style={styles.subheading}>Duration:</Text>
                 <Picker
                     style={styles.picker}
                     selectedValue={duration}
-                    onValueChange={currentDuration => setDuration(currentDuration)}
+                    onValueChange={setDuration}
                     itemStyle={{fontFamily: 'rexlia'}}>
                     <Picker.Item label='10 seconds' value={10} color={'red'} style={{fontSize:25}}/>
                     <Picker.Item label='15 minutes' value={900} color={'red'}/>
@@ -73,7 +79,7 @@ export default function Focus() {
                 <Picker
                     style={styles.picker}
                     selectedValue={interval}
-                    onValueChange={currentInterval => setInterval(currentInterval)}
+                    onValueChange={setInterval}
                     itemStyle={{fontFamily: 'rexlia'}}>
                     <Picker.Item label='2 seconds' value={2} color={'red'} />
                     <Picker.Item label='5 minutes' value={300} color={'red'}/>

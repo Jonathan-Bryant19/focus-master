@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { StyleSheet, Text, Image, View } from 'react-native'
 import Home from './Home'
-import Focus from './Focus'
+import FocusSetup from './FocusSetup'
 import Profile from './Profile'
 
 export default function MainNavigator() {
@@ -58,7 +58,7 @@ export default function MainNavigator() {
                     </View>
                 )
             }}/>
-            <Tab.Screen name="Focus" component={Focus} options={{
+            <Tab.Screen name="FocusSetup" component={FocusSetup} options={{
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
                         <Image 
