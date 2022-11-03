@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Alert, Pressable, Image, ScrollView, ActivityIndicator, RefreshControl } from 'react-native'
+import { StyleSheet, Text, View, Alert, Pressable, Image, ScrollView, RefreshControl, processColor } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import { LineChart } from 'react-native-charts-wrapper'
 
 export default function Profile() {
     const navigation = useNavigation()
@@ -39,7 +40,6 @@ export default function Profile() {
         fetch('http://localhost:3000/userstats').then(r => {
             if (r.ok) {
                 r.json().then(setUserData)
-                console.log("fetch happened")
             }
         })
     }
@@ -103,6 +103,13 @@ export default function Profile() {
 
     }
 
+
+
+
+    const scores = [{x: 0, y: 50}, {x: 1, y: 70}, {x: 4, y: 75}]
+    const dates = ['M', 'T', 'W', 'T', 'F']
+
+
     return (
         <ScrollView 
             style={styles.scrollView}
@@ -110,8 +117,8 @@ export default function Profile() {
                 <RefreshControl
                     refreshing={refreshing}
                     onRefresh={loadUserData}
-                    tintColor={'white'}
-                    title={'Grabbing updated data...'}
+                    tintColor={'red'}
+                    title={'Checking for updated data...'}
                     titleColor={'white'}
                 />
             }
@@ -142,6 +149,100 @@ export default function Profile() {
                 <Image
                     style={styles.profileImage}
                     source={profileImage} />
+
+
+
+
+            
+
+                <View style={styles.chartContainer}>
+                    <LineChart 
+                        style={styles.chart}
+                        data={
+                            {dataSets: [{
+                                label: "On Task", 
+                                values: scores,
+                                config: {
+                                    circleRadius: 5,
+                                    circleColor: processColor('red'),
+                                    drawCircles: true,
+                                    lineWidth: 2,
+                                    drawCircleHole: false
+                                }
+                            
+                            }],
+                                
+                            }
+                        }
+                        legend={ 
+                            {
+                                enabled: true,
+                                horizontalAlignment: 'CENTER',
+                                fontFamily: 'rexlia'
+                            } 
+                        }
+                        marker={
+                            {
+                                enabled: true,
+                                digits: 25,
+                                backgroundTint: 'red',
+                                markerColor: processColor('red'),
+                                textColor: processColor('black'),
+                                textSize: 15
+                            }
+                        }
+                        drawGridBackground={true}
+                        gridBackgroundColor={processColor('blue')}
+                        drawBorders={true}
+                        borderColor={processColor('red')}
+                        borderWidth={5}
+                        xAxis={
+                            {
+                                enabled: true,
+                                position: 'BOTTOM',
+                                valueFormatter: dates,
+                                fontFamily: 'rexlia',
+                                drawGridLines: false,
+                                textSize: 12,
+                                granularityEnabled: true,
+                                granularity: 1,
+                            }
+                        }
+                        yAxis={
+                            {
+                                left: {
+                                    enabled: true,
+                                    fontFamily: 'rexlia',
+                                    textSize: 12,
+                                    granularity: 1
+                                },
+                                right: {
+                                    enabled: false
+                                }
+                            }
+                        }
+                        animation={
+                            {
+                                durationX: 0,
+                                durationY: 1500,
+                                easingY: 'EaseInOutQuart'
+                            }
+                        }
+                        config={
+                            {
+                                circleColor: processColor('red')
+                            }
+                        }
+                    />
+                </View>
+
+
+
+
+
+
+
+
                 <Pressable style={styles.button} onPress={onLogout}>
                     <Text style={styles.buttonText} >Logout</Text>
                 </Pressable>
@@ -187,6 +288,15 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 20,
         fontFamily: 'rexlia'
+    },
+    chartContainer: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
+    chart: {
+        flex: 1,
+        width: 340,
+        height: 240
     },
     button: {
         alignItems: 'center',
