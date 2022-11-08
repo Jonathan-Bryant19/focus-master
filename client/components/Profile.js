@@ -17,6 +17,11 @@ export default function Profile() {
         "baselineAverage": 0,
         "currentAverage": 0
     }
+    const userScores = []
+
+    // const scores = [{x: 0, y: 50}, {x: 1, y: 70}, {x: 4, y: 75}]
+    const dates = ['M', 'T', 'W', 'T', 'F']
+
 
     useEffect(() => {
         loadUserData()
@@ -58,6 +63,10 @@ export default function Profile() {
             total += session.score
         })
         userStats["currentAverage"] = Math.round(total/10)
+        for (let i = 0; i < userData.length; i++) {
+            userScores.push({x: i+1, y: userData[i].score, marker: "    " + userData[i].score.toString() + "%"})
+        }
+        console.log(userScores)
     }
 
     const onLogout = () => {
@@ -106,9 +115,7 @@ export default function Profile() {
 
 
 
-    const scores = [{x: 0, y: 50}, {x: 1, y: 70}, {x: 4, y: 75}]
-    const dates = ['M', 'T', 'W', 'T', 'F']
-
+    
 
     return (
         <ScrollView 
@@ -160,16 +167,18 @@ export default function Profile() {
                         style={styles.chart}
                         data={
                             {dataSets: [{
-                                label: "On Task", 
-                                values: scores,
+                                label: "On Task %", 
+                                values: userScores,
                                 config: {
                                     circleRadius: 5,
                                     circleColor: processColor('red'),
                                     drawCircles: true,
                                     lineWidth: 2,
-                                    drawCircleHole: false
-                                }
-                            
+                                    drawCircleHole: false,
+                                    colors: [processColor('white')], // line color
+                                    drawValues: false,
+                                    valueFormatter: 'integer'
+                                },
                             }],
                                 
                             }
@@ -178,34 +187,33 @@ export default function Profile() {
                             {
                                 enabled: true,
                                 horizontalAlignment: 'CENTER',
-                                fontFamily: 'rexlia'
+                                fontFamily: 'rexlia',
+                                textColor: processColor('red')
                             } 
                         }
                         marker={
                             {
                                 enabled: true,
-                                digits: 25,
-                                backgroundTint: 'red',
-                                markerColor: processColor('red'),
-                                textColor: processColor('black'),
+                                digits: 2,
+                                markerColor: processColor('black'),
+                                textColor: processColor('red'),
                                 textSize: 15
                             }
                         }
-                        drawGridBackground={true}
-                        gridBackgroundColor={processColor('blue')}
+                        chartBackgroundColor={processColor('blue')}
                         drawBorders={true}
                         borderColor={processColor('red')}
-                        borderWidth={5}
+                        borderWidth={2}
                         xAxis={
                             {
                                 enabled: true,
                                 position: 'BOTTOM',
-                                valueFormatter: dates,
                                 fontFamily: 'rexlia',
                                 drawGridLines: false,
                                 textSize: 12,
                                 granularityEnabled: true,
                                 granularity: 1,
+                                textColor: processColor('white')
                             }
                         }
                         yAxis={
@@ -214,7 +222,10 @@ export default function Profile() {
                                     enabled: true,
                                     fontFamily: 'rexlia',
                                     textSize: 12,
-                                    granularity: 1
+                                    granularity: 1,
+                                    textColor: processColor('white'),
+                                    axisMinimum: 0,
+                                    axisMaximum: 100
                                 },
                                 right: {
                                     enabled: false
@@ -226,11 +237,6 @@ export default function Profile() {
                                 durationX: 0,
                                 durationY: 1500,
                                 easingY: 'EaseInOutQuart'
-                            }
-                        }
-                        config={
-                            {
-                                circleColor: processColor('red')
                             }
                         }
                     />
@@ -291,11 +297,10 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
         flex: 1,
-        backgroundColor: 'white'
     },
     chart: {
         flex: 1,
-        width: 340,
+        width: 375,
         height: 240
     },
     button: {

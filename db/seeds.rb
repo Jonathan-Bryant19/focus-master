@@ -5,7 +5,7 @@ FocusSession.all.destroy_all
 puts "Seeding Users..."
 User.create(username: "Orion", email: "orion@adventure.com", password: "1919", password_confirmation: "1919")
 User.create(username: "Desiree", email: "desi@mywife.com", password: "1234", password_confirmation: "1234")
-User.create(username: "Hunter", email: "hunter@mystepson.com", password: "1234", password_confirmation: "1234")
+User.create(username: "Hunter", email: "hunter@myson.com", password: "1234", password_confirmation: "1234")
 User.create(username: "Logan", email: "logan@myson.com", password: "1234", password_confirmation: "1234")
 User.create(username: "Jonathan", email: "jonathan@imtired.com", password: "1234", password_confirmation: "1234")
 
