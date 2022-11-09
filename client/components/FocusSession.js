@@ -4,8 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 
 export default function FocusSession({ route }) {
     // props
-    const { duration, interval, focusSessionId } = route.params
-   
+    const { duration, interval, focusSessionId, user } = route.params
     // state
     const [onTask, setOnTask] = useState(0)
     const [total, setTotal] = useState(0)
@@ -43,10 +42,33 @@ export default function FocusSession({ route }) {
 
     function checkEndOfSession() {
         if (endOfSession) {
+            const myScore = Math.round(onTask/total * 100)
+            fetch('http://localhost:3000/newfocus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: user.id,
+                    focus_session_id: focusSessionId,
+                    score: myScore
+                })
+            }).then(r => {
+                if (r.status === 422) {
+                    r.json().then(json => setErrors(json.errors))
+                    Alert.alert(
+                        "Server Error",
+                        {errors},
+                        {
+                            text: "OK",
+                            onPress: () => navigation.navigate('FocusSetup')
+                        }
+                    )
+                }
+            })
             navigation.navigate("SessionSummary", {
                 total,
-                onTask,
-                focusSessionId
+                onTask
             })
         }
     }
@@ -112,7 +134,6 @@ export default function FocusSession({ route }) {
         toggleScreen()
     }
     
-
     return (
         <View style={styles.container}>
             { isScreenBlank ?
@@ -142,7 +163,7 @@ export default function FocusSession({ route }) {
             </>
             }
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({

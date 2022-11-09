@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Alert, Pressable, Image, ScrollView, RefreshControl, processColor } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
-import { LineChart } from 'react-native-charts-wrapper'
+import { StyleSheet, Text, View, Alert, Pressable, Image, ScrollView, RefreshControl } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Profile() {
     const navigation = useNavigation()
@@ -9,15 +8,14 @@ export default function Profile() {
     const profileImageCrouch = require('../assets/characters/Robot_Crouch.gif')
     const profileImageDie = require('../assets/characters/Robot_Die.gif')
     const [user, setUser] = useState(null)
-    const [profileImage, setProfileImage] = useState(profileImageIdle)
     const [userData, setUserData] = useState(null)
+    const [profileImage, setProfileImage] = useState(profileImageIdle)
     const [refreshing, setRefreshing] = useState(false)
     const userStats = {
         "totalSessions": 0,
         "baselineAverage": 0,
         "currentAverage": 0
     }
-    const userScores = []
 
     useEffect(() => {
         loadUserData()
@@ -40,12 +38,14 @@ export default function Profile() {
         })
         fetch('http://localhost:3000/userstats').then(r => {
             if (r.ok) {
-                r.json().then(setUserData)
+                r.json().then(data => setUserData(data))
             }
         })
     }
 
-    if (userData) {
+    if (userData) analyzeUserStats()
+    
+    function analyzeUserStats() {
         const firstTenSessions = userData.slice(0, 10)
         const lastTenSessions = userData.length < 10 ? userData : userData.slice(userData.length - 10)
         userStats["totalSessions"] = userData.length
@@ -61,13 +61,9 @@ export default function Profile() {
             total += session.score
         })
         userStats["currentAverage"] = Math.round(total/10)
-        
-        for (let i = 0; i < userData.length; i++) {
-            userScores.push({x: i+1, y: userData[i].score, marker: "    " + userData[i].score.toString() + "%"})
-        }
     }
 
-    const onLogout = () => {
+    function onLogout() {
         function logoutTransition() {
             setUser(null)
             navigation.navigate('Login')
@@ -110,11 +106,6 @@ export default function Profile() {
 
     }
 
-
-
-
-    
-
     return (
         <ScrollView 
             style={styles.scrollView}
@@ -154,99 +145,6 @@ export default function Profile() {
                 <Image
                     style={styles.profileImage}
                     source={profileImage} />
-
-
-
-
-            
-
-                <View style={styles.chartContainer}>
-                    <LineChart 
-                        style={styles.chart}
-                        data={
-                            {dataSets: [{
-                                label: "On Task %", 
-                                values: userScores,
-                                config: {
-                                    circleRadius: 5,
-                                    circleColor: processColor('red'),
-                                    drawCircles: true,
-                                    lineWidth: 2,
-                                    drawCircleHole: false,
-                                    colors: [processColor('white')], // line color
-                                    drawValues: false,
-                                    valueFormatter: 'integer'
-                                },
-                            }],
-                                
-                            }
-                        }
-                        legend={ 
-                            {
-                                enabled: true,
-                                horizontalAlignment: 'CENTER',
-                                fontFamily: 'rexlia',
-                                textColor: processColor('red')
-                            } 
-                        }
-                        marker={
-                            {
-                                enabled: true,
-                                digits: 2,
-                                markerColor: processColor('black'),
-                                textColor: processColor('red'),
-                                textSize: 15
-                            }
-                        }
-                        chartBackgroundColor={processColor('blue')}
-                        drawBorders={true}
-                        borderColor={processColor('red')}
-                        borderWidth={2}
-                        xAxis={
-                            {
-                                enabled: true,
-                                position: 'BOTTOM',
-                                fontFamily: 'rexlia',
-                                drawGridLines: false,
-                                textSize: 12,
-                                granularityEnabled: true,
-                                granularity: 1,
-                                textColor: processColor('white')
-                            }
-                        }
-                        yAxis={
-                            {
-                                left: {
-                                    enabled: true,
-                                    fontFamily: 'rexlia',
-                                    textSize: 12,
-                                    granularity: 1,
-                                    textColor: processColor('white'),
-                                    axisMinimum: 0,
-                                    axisMaximum: 100
-                                },
-                                right: {
-                                    enabled: false
-                                }
-                            }
-                        }
-                        animation={
-                            {
-                                durationX: 0,
-                                durationY: 1500,
-                                easingY: 'EaseInOutQuart'
-                            }
-                        }
-                    />
-                </View>
-
-
-
-
-
-
-
-
                 <Pressable style={styles.button} onPress={onLogout}>
                     <Text style={styles.buttonText} >Logout</Text>
                 </Pressable>
@@ -255,7 +153,7 @@ export default function Profile() {
                 </Pressable>
             </View>
         </ScrollView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -292,14 +190,6 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 20,
         fontFamily: 'rexlia'
-    },
-    chartContainer: {
-        flex: 1,
-    },
-    chart: {
-        flex: 1,
-        width: 375,
-        height: 240
     },
     button: {
         alignItems: 'center',

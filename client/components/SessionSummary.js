@@ -1,64 +1,57 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Pressable } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
+import ProgressChart from './ProgressChart'
 
-export default function SessionSummary({route}) {
-    const {total, onTask, focusSessionId} = route.params    
+export default function SessionSummary({ route }) {
+    const { total, onTask } = route.params    
     const [user, setUser] = useState(null)
     const [errors, setErrors] = useState(null)
+    const [userData, setUserData] = useState(null)
     const navigation = useNavigation();
-    
+    const userScores = []
+
     useEffect(() => {
-        fetch('http://localhost:3000/me').then(r => {
+        (fetch('http://localhost:3000/me').then(r => {
           if (r.ok) {
               r.json().then(user => setUser(user))
-          } else {
-              if (r.status === 401) {
-                  console.log("You're not logged in...")
-                  console.log("App.js user: ", user)
-              }
-          }
-      })
+            } else {
+                if (r.status === 401) {
+                    r.json().then(r => setErrors(errors))
+                }
+            }
+        }))
+        .then(fetch('http://localhost:3000/userstats').then(r => {
+            if (r.ok) {
+                r.json().then(data => setUserData(data))
+            }
+        }))
     }, [])
 
     function handleOnPress() {
-        const myScore = Math.round(onTask/total * 100)
-        fetch('http://localhost:3000/newfocus', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user_id: user.id,
-                focus_session_id: focusSessionId,
-                score: myScore
-            })
-        }).then(r => {
-            if (r.ok) {
-                navigation.navigate('FocusSetup')
-            } else if (r.status === 422) {
-                r.json().then(json => setErrors(json.errors))
-                Alert.alert(
-                    "Server Error",
-                    {errors},
-                    {
-                        text: "OK",
-                        onPress: () => navigation.navigate('FocusSetup')
-                    }
-                )
-            }
-        })
+        navigation.navigate('FocusSetup')
+    }
+
+    if (userData) analyzeUserScores()
+
+    function analyzeUserScores() {
+        for (let i = 0; i < userData.length; i++) {
+            userScores.push({x: i+1, y: userData[i].score, marker: "    " + userData[i].score.toString() + "%"})
+        }
+        console.log("here!!!")
     }
 
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Session Summary</Text>
             <Text style={styles.subheading}>You were on task in {onTask} of {total} intervals. That's {(onTask/total)*100}%!</Text>
+            <Text style={styles.subheading}>Here's a look at your most recent progress.</Text>
+            <ProgressChart userScores={userScores}/>
             <Pressable style={styles.button} onPress={handleOnPress}>
                 <Text style={styles.buttonText} >Again!</Text>
             </Pressable>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -67,9 +60,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         alignItems: 'center',
     },
+    chartContainer: {
+        flex: 1,
+        maxHeight: 240,
+        width: 375,
+        marginTop: 20,
+        marginBottom: 20
+    },
+    chart: {
+        flex: 1
+    },
     heading: {
         marginTop: 100,
-        marginBottom: 50,
+        marginBottom: 20,
         fontSize: 40,
         fontWeight: 'bold',
         color: 'white',
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
     },
     subheading: {
         marginTop: 20,
-        marginBottom: 50,
+        marginBottom: 20,
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 30,
         width: 150,
         height: 60,
         borderRadius: 15,

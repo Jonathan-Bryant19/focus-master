@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Alert, Pressable } from 'react-native'
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native'
@@ -7,9 +7,22 @@ export default function Focus() {
     const [duration, setDuration] = useState(10)
     const [interval, setInterval] = useState(2)
     const [errors, setErrors] = useState(null)
+    const [user, setUser] = useState(null)
     const navigation = useNavigation();
 
-    const onStartFocusSession = () => {
+    useEffect(() => {
+        fetch('http://localhost:3000/me').then(r => {
+            if (r.ok) {
+                r.json().then(user => setUser(user))
+            } else {
+                if (r.status === 401) {
+                    console.log("User is not logged in...")
+                }
+            }
+        })
+    }, [])
+
+    function onStartFocusSession() {
         if ((duration/2) < interval) {
             Alert.alert(
                 "Invalid Setup",
@@ -37,7 +50,8 @@ export default function Focus() {
                             params: {
                                 duration,
                                 interval,
-                                focusSessionId: parseInt(data)
+                                focusSessionId: parseInt(data),
+                                user
                             }
                         })          
                     }
