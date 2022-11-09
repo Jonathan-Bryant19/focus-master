@@ -19,10 +19,6 @@ export default function Profile() {
     }
     const userScores = []
 
-    // const scores = [{x: 0, y: 50}, {x: 1, y: 70}, {x: 4, y: 75}]
-    const dates = ['M', 'T', 'W', 'T', 'F']
-
-
     useEffect(() => {
         loadUserData()
     }, [])
@@ -51,22 +47,24 @@ export default function Profile() {
 
     if (userData) {
         const firstTenSessions = userData.slice(0, 10)
-        const lastTenSessions = userData.slice(userData.length - 10)
+        const lastTenSessions = userData.length < 10 ? userData : userData.slice(userData.length - 10)
         userStats["totalSessions"] = userData.length
+        
         let total = 0
         firstTenSessions.forEach(session => {
             total += session.score
         })
         userStats["baselineAverage"] = Math.round(total/10)
+        
         total = 0
         lastTenSessions.forEach(session => {
             total += session.score
         })
         userStats["currentAverage"] = Math.round(total/10)
+        
         for (let i = 0; i < userData.length; i++) {
             userScores.push({x: i+1, y: userData[i].score, marker: "    " + userData[i].score.toString() + "%"})
         }
-        console.log(userScores)
     }
 
     const onLogout = () => {
