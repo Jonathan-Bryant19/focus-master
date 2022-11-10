@@ -54,7 +54,12 @@ export default function FocusSession({ route }) {
                     score: myScore
                 })
             }).then(r => {
-                if (r.status === 422) {
+                if (r.ok) {
+                    navigation.navigate("SessionSummary", {
+                        total,
+                        onTask
+                    })
+                } else if (r.status === 422) {
                     r.json().then(json => setErrors(json.errors))
                     Alert.alert(
                         "Server Error",
@@ -65,10 +70,6 @@ export default function FocusSession({ route }) {
                         }
                     )
                 }
-            })
-            navigation.navigate("SessionSummary", {
-                total,
-                onTask
             })
         }
     }

@@ -38,14 +38,13 @@ export default function SessionSummary({ route }) {
         for (let i = 0; i < userData.length; i++) {
             userScores.push({x: i+1, y: userData[i].score, marker: "    " + userData[i].score.toString() + "%"})
         }
-        console.log("here!!!")
     }
 
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Session Summary</Text>
             <Text style={styles.subheading}>You were on task in {onTask} of {total} intervals. That's {(onTask/total)*100}%!</Text>
-            <Text style={styles.subheading}>Here's a look at your most recent progress.</Text>
+            <Text style={styles.subheading}>Here's your progress over the past {userScores.length} sessions:</Text>
             <ProgressChart userScores={userScores}/>
             <Pressable style={styles.button} onPress={handleOnPress}>
                 <Text style={styles.buttonText} >Again!</Text>
@@ -82,7 +81,8 @@ const styles = StyleSheet.create({
     subheading: {
         marginTop: 20,
         marginBottom: 20,
-        fontSize: 20,
+        fontSize: 17,
+        width: 375,
         fontWeight: 'bold',
         color: 'white',
         fontFamily: 'rexlia'

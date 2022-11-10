@@ -32,7 +32,6 @@ export default function Profile() {
             } else {
                 if (r.status === 401) {
                     console.log("You're not logged in...")
-                    console.log("App.js user: ", user)
                 }
             }
         })
@@ -84,7 +83,7 @@ export default function Profile() {
             function deleteAccountTransition() {
                 setUser(null)
                 navigation.navigate('Login')
-                setTimeout(() => setProfileImage(profileImageIdle), 1000)
+                // setTimeout(() => setProfileImage(profileImageIdle), 1000)
             }
             fetch('http://localhost:3000/deleteaccount', {
                 method: 'DELETE'

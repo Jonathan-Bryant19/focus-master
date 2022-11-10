@@ -33,12 +33,14 @@ export default function Login() {
     })
 }, [])
 
-  const onLogin = e => {
+  function onLogin(e) {
     e.preventDefault()
+
     function loginTransition() {
       navigation.navigate('MainNavigator')
       setTimeout(() => setHeroImage(heroIdle), 500)
     }
+    
     fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
