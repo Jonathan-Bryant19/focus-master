@@ -30,3 +30,34 @@ puts "Seeding UserSessions..."
         score: rand(20..100)
     )
 }
+
+puts "Seeding Orion Demo Account"
+UserSession.where(user_id: User.where(username: "Orion").first.id).destroy_all
+5.times {
+    UserSession.create(
+        user_id: User.where(username: "Orion").first.id,
+        focus_session_id: FocusSession.all.sample.id,
+        score: rand(0..20)
+    )
+}
+5.times {
+    UserSession.create(
+        user_id: User.where(username: "Orion").first.id,
+        focus_session_id: FocusSession.all.sample.id,
+        score: rand(20..40)
+    )
+}
+5.times {
+    UserSession.create(
+        user_id: User.where(username: "Orion").first.id,
+        focus_session_id: FocusSession.all.sample.id,
+        score: rand(40..60)
+    )
+}
+5.times {
+    UserSession.create(
+        user_id: User.where(username: "Orion").first.id,
+        focus_session_id: FocusSession.all.sample.id,
+        score: rand(60..80)
+    )
+}
